@@ -1,4 +1,4 @@
-# Extension of existing Swing standard library
+# Extension of existing Swing library
 [![Version](http://img.shields.io/badge/version-1.5.3-blue.svg?)]() [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) ![Status](http://img.shields.io/badge/build-STABLE-green.svg) 
 [![Dependecies](http://img.shields.io/badge/dependency-Java 8-red.svg?)](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 
