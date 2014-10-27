@@ -1,4 +1,4 @@
-package it.hackcaffebabe.jxswingplusswingplusswingplus.border;
+package it.hackcaffebabe.jxswingplus.border;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -12,7 +12,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
-
 
 /**
  * This class provide the smoothed and rounded border for {@link JTextField}.
@@ -28,7 +27,7 @@ public class JXRoundedBorder extends AbstractBorder
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 		int r = height - 1;
-		RoundRectangle2D round = new RoundRectangle2D.Float( x, y, width - 1, height - 1, r, r );
+		RoundRectangle2D round = new RoundRectangle2D.Float( x, y, width - 1, r, r, r );
 		Container parent = c.getParent();
 		if(parent != null) {
 			g2.setColor( parent.getBackground() );

@@ -17,14 +17,16 @@ import javax.swing.SwingUtilities;
 
 
 /**
- * This class describe a common list witch each elements can be checked as a common {@link JCheckBox}.<br>
- * JXCheckList needs to know the type of its elements by:<br>
+ * This class describe a common list witch each elements can be checked as a
+ * common {@link JCheckBox}. JXCheckList needs to know the type of its elements
+ * by:
  * <pre>{@code
  * JXCheckList<Integer> lstCheck = new JXCheckList<>();
  * }
  * </pre>
- * To add elements is the same as common {@link JList} instead of the elements MUST be of type {@link JXCheckListEntry}<br>
- * You can simply create the appropriate model using:<br>
+ * To add elements is the same as common {@link JList} instead of the elements
+ * MUST be of type {@link JXCheckListEntry}. You can simply create the
+ * appropriate model using:
  * <pre>{@code
  * List<Integer> list = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 );
  * DefaultListModel<JXCheckListEntry<Integer>> model = JXCheckBoxList.convertToModel( list, true );
@@ -34,14 +36,14 @@ import javax.swing.SwingUtilities;
  * <pre>{@code
  * ActionListener evt = new ActionListener(){
  * 		public void actionPerformed(ActionEvent e){
- * 			System.out.println( lstCheck.getCheckedIdexes() );
+ * 			System.out.println( lstCheck.getCheckedIndexes() );
  * 		}
  * };
  * DefaultListModel<JXCheckListEntry<Integer>> model = new DefaultListModel<>();
  * for(int i = 0; i < 100; i++) {
- * 		JXCheckListEntry<Integer> xentry = new JXCheckListEntry<Integer>( i, false );
- * 		xentry.addActionListener( evt );
- * 		model.addElement( xentry );
+ * 		JXCheckListEntry<Integer> x = new JXCheckListEntry<Integer>( i, false );
+ * 		x.addActionListener( evt );
+ * 		model.addElement( x );
  * }
  * lstCheck.setModel( model );
  * }</pre>
@@ -56,9 +58,9 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 	private List<T> lstSelectedObjects = new ArrayList<T>();
 
 	/**
-	 * Create a {@link JList} of {@link JXCheckListEntry}.<br>
-	 * This constructor set the appropriate render for JXCheckListEntry, ListSelectionMode on SINGLE_SELECTION and
-	 * Mouse-Keyboard listener to check the JCheckBox.
+	 * Create a {@link JList} of {@link JXCheckListEntry}. This constructor set
+     * the appropriate render for JXCheckListEntry, ListSelectionMode on
+     * SINGLE_SELECTION and Mouse-Keyboard listener to check the JCheckBox.
 	 */
 	public JXCheckList(){
 		super();
@@ -68,11 +70,11 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 		initKeyboardListener();
 	}
 
-//===========================================================================================
+//==============================================================================
 // METHOD
-//===========================================================================================
-	/* Initialize the Mouse
-	 * this will not override by user declaration as: "list.addMouseListener( new MouseAdapter(){ ... } )" */
+//==============================================================================
+	/* Initialize the Mouse this will not override by user declaration as:
+	 * "list.addMouseListener( new MouseAdapter(){ ... } )" */
 	private void initMouseListener(){
 		addMouseListener( new MouseAdapter(){
 			@Override
@@ -84,18 +86,18 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 		} );
 	}
 
-	/* this initialize the keyboard listener to pressJCheckbox on space and enter typed. */
+	/* this initialize the keyboard listener to pressJCheckbox on space and
+	 * enter typed. */
 	private void initKeyboardListener(){
 		addKeyListener( new KeyListener(){
 			@Override
 			public void keyTyped(KeyEvent e){}
-
 			@Override
 			public void keyReleased(KeyEvent e){}
-
 			@Override
 			public void keyPressed(KeyEvent e){
-				if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
+                int code = e.getKeyCode();
+				if( code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
 					pressJCheckBox( e );
 				}
 			}
@@ -125,6 +127,7 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 				}
 				entry.getCheckbox().setSelected( !entry.getCheckbox().isSelected() );
 				repaint();
+                //run the action listener form the entry
 				if(entry.getCheckbox().getActionListeners().length != 0) {
 					ActionEvent evt = new ActionEvent( entry.getCheckbox(), 0, entry.getCheckbox().getActionCommand() );
 					entry.getCheckbox().getActionListeners()[0].actionPerformed( evt );
@@ -134,10 +137,12 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 	}
 
 	/**
-	 * This method converts a list of user data in an appropriate {@link DefaultListModel} of {@link JXCheckListEntry}
-	 * that represents the list given to be displayed on {@link JXCheckList}
+	 * This method converts a list of user data in an appropriate
+     * {@link DefaultListModel} of {@link JXCheckListEntry} that represents the
+     * list given to be displayed on {@link JXCheckList}
 	 * @param objects {@link List} of T objects user.
-	 * @param showRightIcon {@link Boolean} if you want to display a icon right of this element.<br>
+	 * @param showRightIcon {@link Boolean} if you want to display a icon right
+     *                                     of this element.<br>
 	 * This icon indicates if the elements is checked or not.
 	 * @return {@link DefaultListModel} of T type.
 	 */
@@ -151,11 +156,12 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 		return model;
 	}
 
-//===========================================================================================
+//==============================================================================
 // GETTER
-//===========================================================================================
+//==============================================================================
 	/**
-	 * This method returns a list of index that correspond at the checked elements.
+	 * This method returns a list of index that correspond at the checked
+     * elements.
 	 * @return {@link List} of checked index
 	 */
 	public List<Integer> getCheckedIdexes(){

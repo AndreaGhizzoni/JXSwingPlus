@@ -1,4 +1,4 @@
-package it.hackcaffebabe.jxswingplus.searchengine;
+package it.hackcaffebabe.jxswingplus.searchengine.model;
 
 import javax.swing.Icon;
 
@@ -28,10 +28,10 @@ public class JXDefaultSearchEngine implements JXSearchEngine
 		this.setFavicon( icon );
 	}
 
-//===========================================================================================
+//==============================================================================
 // SETTER
-//===========================================================================================
-	/** @param name {@link String} the name of {@link JXSearchEngine}. */
+//==============================================================================
+	/** @param name {@link String} the name of {@link JXSearchEngine} */
 	public void setName(String name){
 		this.name = name == null || name.isEmpty() ? "null" : name;
 	}
@@ -46,9 +46,9 @@ public class JXDefaultSearchEngine implements JXSearchEngine
 		this.favicon = favicon == null ? NO_SEARCH_ENGINE : favicon;
 	}
 
-//===========================================================================================
+//==============================================================================
 // GETTER
-//===========================================================================================
+//==============================================================================
 	@Override
 	public String getName(){
 		return this.name;
@@ -66,8 +66,6 @@ public class JXDefaultSearchEngine implements JXSearchEngine
 
 	@Override
 	public String toString(){
-//		return String.format( "JXDefaultSearchEngine[name:%s,url:%s,favicon:%b]", name, url,
-//				favicon == NO_SEARCH_ENGINE ? false : true );
 		return getName();
 	}
 }

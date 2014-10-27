@@ -1,4 +1,4 @@
-package it.hackcaffebabe.jxswingplus.searchengine;
+package it.hackcaffebabe.jxswingplus.searchengine.ui;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -8,12 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import javax.swing.Icon;
-import javax.swing.JButton;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
-
+/* class used  */
 class TriangleArrowButton extends JButton
 {
 	private static final long serialVersionUID = 1L;
@@ -23,22 +22,23 @@ class TriangleArrowButton extends JButton
 	public void setIcon(Icon favicon){
 		super.setIcon( favicon );
 		if(favicon != null)
-			setRolloverIcon( SearchBarUIUtils.makeRolloverIcon( favicon ) );
+			setRolloverIcon( Utility.makeRolloverIcon(favicon) );
 	}
 
 	@Override
 	protected void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		if(getModel().isArmed()) {
-			g2.setColor( new Color( 220, 220, 220 ) );
-		} else if(isRolloverEnabled() && getModel().isRollover()) {
-			g2.setColor( new Color( 220, 220, 220 ) );
-		} else if(hasFocus()) {
+
+        ButtonModel bm = getModel();
+        boolean isArmedAndRollover = bm.isArmed() && bm.isRollover() ;
+        boolean isRolloverEnableAndHasFocus = isRolloverEnabled() && hasFocus();
+		if(isArmedAndRollover && isRolloverEnableAndHasFocus ) {
 			g2.setColor( new Color( 220, 220, 220 ) );
 		} else {
 			g2.setColor( getBackground() );
 		}
+
 		Rectangle r = getBounds();
 		r.grow( 1, 1 );
 		g2.fill( r );
@@ -68,6 +68,7 @@ class TriangleArrowButton extends JButton
 		}
 	}
 
+    /* little icon triangle for the button */
 	static class TriangleIcon implements Icon
 	{
 		@Override
@@ -82,13 +83,9 @@ class TriangleArrowButton extends JButton
 		}
 
 		@Override
-		public int getIconWidth(){
-			return 9;
-		}
+		public int getIconWidth(){ return 9; }
 
 		@Override
-		public int getIconHeight(){
-			return 9;
-		}
+		public int getIconHeight(){ return 9; }
 	}
 }

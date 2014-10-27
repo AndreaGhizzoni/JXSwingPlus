@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * This is the render for {@link JXCheckList}
- *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
@@ -34,6 +33,7 @@ public class JXCheckListCellRenderer extends DefaultListCellRenderer
 			}
 			//smoothing check box border
 			entry.setBorder( isSelected ? UIManager.getBorder( "List.focusCellHighlightBorder" ) : new EmptyBorder( 1, 1, 1, 1 ) );
+
 			//set the appropriate background, foreground and fort of check list entry
 			entry.setBackground( isSelected ? list.getSelectionBackground() : list.getBackground() );
 			entry.setForeground( isSelected ? list.getSelectionForeground() : list.getForeground() );

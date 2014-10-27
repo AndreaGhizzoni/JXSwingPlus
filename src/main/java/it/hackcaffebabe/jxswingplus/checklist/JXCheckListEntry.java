@@ -8,13 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-
 /**
- * Default element for {@link JXCheckList}.<br>
+ * Default element for {@link JXCheckList}.
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class JXCheckListEntry <T> extends JPanel
+public class JXCheckListEntry<T> extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private T userObj;
@@ -25,7 +24,8 @@ public class JXCheckListEntry <T> extends JPanel
 	/**
 	 * Instance an entry of {@link JXCheckList} for given type of object.
 	 * @param obj T of Object wants to be displayed into {@link JXCheckList}
-	 * @param showRightIcon {@link Boolean} if you want to display a icon right of this element.<br>
+	 * @param showRightIcon {@link Boolean} if you want to display a icon right
+     *                                     of this element.<br>
 	 * This icon indicates if the elements is checked or not.
 	 */
 	public JXCheckListEntry(T obj, boolean showRightIcon){
@@ -44,28 +44,26 @@ public class JXCheckListEntry <T> extends JPanel
 	/**
 	 * Set one {@link ActionListener} to perform when this entry is selected.
 	 * @param l {@link ActionListener} to perform. It can not be null.
+     * @throws IllegalArgumentException if argument is null.
 	 */
-	public void addActionListener(ActionListener l){
+	public void addActionListener(ActionListener l) throws IllegalArgumentException{
+        if(l == null )
+            throw new IllegalArgumentException("Action Listener to set can not be null");
 		this.chbCheck.addActionListener( l );
 	}
 
-//===========================================================================================
+//==============================================================================
 // SETTER
-//===========================================================================================
+//==============================================================================
 	/* Package method. Used only by the render */
 	void setRightIcon(Icon i){
-		if(showRightIcon) {
-			if(i == null) {
-				lblRightIcon.setIcon( null );
-			} else {
-				lblRightIcon.setIcon( i );
-			}
-		}
+		if(showRightIcon)
+            lblRightIcon.setIcon( i );
 	}
 
-//===========================================================================================
+//==============================================================================
 // GETTER
-//===========================================================================================
+//==============================================================================
 	/**
 	 * Returns the user object displayed as a check entry.
 	 * @return T user object.

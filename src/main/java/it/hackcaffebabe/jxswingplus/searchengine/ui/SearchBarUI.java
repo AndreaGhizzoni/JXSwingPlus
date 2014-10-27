@@ -1,4 +1,6 @@
-package it.hackcaffebabe.jxswingplus.searchengine;
+package it.hackcaffebabe.jxswingplus.searchengine.ui;
+
+import it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -10,6 +12,7 @@ import java.awt.LayoutManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -29,7 +32,7 @@ import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-
+/* UI for JXSearchBar */
 class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 {
 	protected PopupMenuListener popupMenuListener;
@@ -39,7 +42,7 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 	public SearchBarUI(AbstractAction c){
 		super();
 		if(c == null)
-			loupeAction = SearchBarUIUtils.VOID_ACTION;
+			loupeAction = Utility.VOID_ACTION;
 		else loupeAction = c;
 	}
 
@@ -71,15 +74,14 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 
 				@Override
 				public void popupMenuWillBecomeInvisible(PopupMenuEvent e){
-					final Object o = listBox.getSelectedValue();
-					if(o != null && o instanceof JXSearchEngine) {
-						JXSearchEngine se = (JXSearchEngine) o;
-						arrowButton.setIcon( se.getFavIcon() );
-					}
+					final Object obj = listBox.getSelectedValue();
+					if(obj != null && obj instanceof JXSearchEngine)
+						arrowButton.setIcon( ((JXSearchEngine) obj).getFavIcon() );
+
 					EventQueue.invokeLater( new Runnable(){
 						@Override
 						public void run(){
-							((JXSearchBarModel) comboBox.getModel()).setSelectedItem( (JXSearchEngine) o );
+							comboBox.getModel().setSelectedItem(obj);
 						}
 					} );
 				}
@@ -98,15 +100,14 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 	@Override
 	protected KeyListener createKeyListener(){
 		if(keyListener == null) {
-			keyListener = new KeyAdapter(){
-			};
+			keyListener = new KeyAdapter(){};
 		}
 		return keyListener;
 	}
 
 	@Override
 	protected void configureEditor(){
-		// Should be in the same state as the combobox
+		// Should be in the same state as the combo box
 		editor.setEnabled( comboBox.isEnabled() );
 		editor.setFocusable( comboBox.isFocusable() );
 		editor.setFont( comboBox.getFont() );
@@ -116,9 +117,10 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 		comboBox.configureEditor( comboBox.getEditor(), comboBox.getSelectedItem() );
 		editor.addPropertyChangeListener( propertyChangeListener );
 
-		((JComponent) editor).setBorder( BorderFactory.createEmptyBorder( 0, 4, 0, 0 ) );
-		((JComponent) editor).getActionMap().put( "loupe", loupeAction );
-		InputMap im = ((JComponent) editor).getInputMap( JComponent.WHEN_FOCUSED );
+        JComponent edit = ((JComponent) editor);
+//      edit.setBorder( BorderFactory.createLineBorder(Color.BLACK,1));
+		edit.getActionMap().put( "loupe", loupeAction );
+		InputMap im = edit.getInputMap( JComponent.WHEN_FOCUSED );
 		im.put( KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0 ), "loupe" );
 	}
 
@@ -132,23 +134,21 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 			arrowButton.setFocusPainted( false );
 			arrowButton.setContentAreaFilled( false );
 			arrowButton.setBorder( BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder( 0, 0, 0, 0, new Color( 127, 157, 185 ) ),
-					BorderFactory.createEmptyBorder( 1, 1, 1, 1 ) ) );
+					BorderFactory.createMatteBorder( 0, 0, 0, 0,
+                    new Color( 127, 157, 185 ) ),
+					BorderFactory.createEmptyBorder( 1, 1, 1, 1 ) )
+            );
 		}
 	}
 
 	@Override
 	protected void installComponents(){
 		arrowButton = new TriangleArrowButton();
-		if(arrowButton != null) {
-			configureArrowButton();
-		}
+        configureArrowButton();
 		comboBox.add( arrowButton );
 
 		loupeButton = createLoupeButton();
-		if(loupeButton != null) {
-			configureLoupeButton();
-		}
+        configureLoupeButton();
 		comboBox.add( loupeButton );
 
 		addEditor();
@@ -166,22 +166,22 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 
 	protected JButton createLoupeButton(){
 		JButton button = new JButton( loupeAction );
-		ImageIcon loupe = new ImageIcon( getClass().getClassLoader().getResource( "searchengine/loupe.png" ) );
+        URL u = getClass().getClassLoader().getResource( "searchengine/loupe.png" );
+		ImageIcon loupe = new ImageIcon( u );
 		button.setIcon( loupe );
-		button.setRolloverIcon( SearchBarUIUtils.makeRolloverIcon( loupe ) );
+		button.setRolloverIcon(Utility.makeRolloverIcon(loupe));
 		return button;
 	}
 
 	protected void configureLoupeButton(){
 		if(loupeButton != null) {
 			loupeButton.setName( "ComboBox.loupeButton" );
-			loupeButton.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+//          loupeButton.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			loupeButton.setEnabled( comboBox.isEnabled() );
 			loupeButton.setFocusable( comboBox.isFocusable() );
 			loupeButton.setOpaque( false );
 			loupeButton.setRequestFocusEnabled( false );
 			loupeButton.setFocusPainted( false );
-//			loupeButton.setContentAreaFilled( false );
 			loupeButton.resetKeyboardActions();
 			loupeButton.setInheritsPopupMenu( true );
 		}
@@ -199,8 +199,8 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Component getListCellRendererComponent(JList< ? > list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus){
+			public Component getListCellRendererComponent(JList< ? > list,
+                    Object value, int index, boolean isSelected, boolean cellHasFocus){
 				JLabel l = (JLabel) super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 				if(value instanceof JXSearchEngine) {
 					JXSearchEngine se = (JXSearchEngine) value;
@@ -239,29 +239,32 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 				int height = cb.getHeight();
 				Insets insets = cb.getInsets();
 				int buttonHeight = height - insets.top - insets.bottom;
-				int buttonWidth = buttonHeight;
-				int loupeWidth = buttonHeight;
 
+                //set layout of arrow button
+				int buttonWidth;
 				JButton arrowButton = (JButton) cb.getComponent( 0 );
 				if(arrowButton != null) {
 					Insets arrowInsets = arrowButton.getInsets();
 					buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
 					arrowButton.setBounds( insets.left, insets.top, buttonWidth, buttonHeight );
 				}
-				JButton loupeButton = null;
+
+                //set layout of search button
 				for(Component c: cb.getComponents()) {
 					if("ComboBox.loupeButton".equals( c.getName() )) {
 						loupeButton = (JButton) c;
+                        loupeButton.setBounds(width - insets.right - buttonHeight, insets.top,
+                            buttonHeight, buttonHeight);
 						break;
 					}
 				}
-				if(loupeButton != null) {
-					loupeButton.setBounds( width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight );
-				}
+
+                //set layout of text edit
 				JTextField editor = (JTextField) cb.getEditor().getEditorComponent();
 				if(editor != null) {
-					editor.setBounds( insets.left + buttonWidth, insets.top, width - insets.left - insets.right
-							- buttonWidth - loupeWidth, height - insets.top - insets.bottom );
+					editor.setBounds( insets.left+buttonHeight, insets.top,
+                            width-insets.left-insets.right-buttonHeight-buttonHeight-5,
+                            height-insets.top-insets.bottom );
 				}
 			}
 		};
