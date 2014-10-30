@@ -10,17 +10,17 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-
 /**
- * Create an horizontal status panel to put on the bottom or on top of the {@link JFrame} using:
+ * Create an horizontal status panel to put on the bottom or on top of the
+ * {@link javax.swing.JFrame} using:
  * <pre>{@code
  * JFrame frame = new JFrame();
- * ... 
+ * //...
  * JXStatusBar emptyStatusBar = new JXStatusBar( frame );
  * JXStatusBar statusBarWithString = new JXStatusBar( frame, "MyProgram", "Start", 16 );
  * frame.add(s, BorderLayout.SOUTH);
  * }</pre>
- * It's possible to change the {@link Font} and the text displayed by:<br>
+ * It's possible to change the {@link java.awt.Font} and the text displayed by:<br>
  * <pre>{@code
  * statusBarWithString.setTextFont( new Font( Font.MONOSPACED, Font.PLAIN, 11 ) );
  * statusBarWithString.setTitle( "title" );
@@ -50,43 +50,50 @@ public class JXStatusBar extends JPanel
 	/**
 	 * Create an horizontal status panel.
 	 * @param content {@link JFrame} the content that JXStatusBar is display.
-	 * @param status {@link String} that is displayed on the left of the status bar. Pass null to hidden it.
-	 * @param title {@link String} that is displayed on the tight of the status bar. Pass null to hidden it.
-	 * @param height {@link Integer} height must be in rage (16, Integer.MAX_VALUE) otherwise it will be set to 16
+	 * @param status {@link String} that is displayed on the left of the status
+     *                             bar. Pass null to hidden it.
+	 * @param title {@link String} that is displayed on the tight of the status
+     *                            bar. Pass null to hidden it.
+	 * @param height {@link Integer} height must be in rage
+     *                              (16, Integer.MAX_VALUE) otherwise it will
+     *                              be set to 16
 	 * @throws NullPointerException if content is null.
 	 */
 	public JXStatusBar(JFrame content, String status, String title, int height) throws NullPointerException{
 		super();
 		this.setContent( content );
 		setBorder( new BevelBorder( BevelBorder.RAISED ) );
-		setPreferredSize( new Dimension( this.content.getWidth(), (height > Integer.MAX_VALUE || height < 16 ? 16
-				: height) ) );
+		setPreferredSize( new Dimension( this.content.getWidth(), (height < 16 ? 16 : height) ) );
 		setLayout( new BoxLayout( this, BoxLayout.X_AXIS ) );
 		this.init();
 		this.setStatus( status );
 		this.setTitle( title );
 	}
 
-//===========================================================================================
+//==============================================================================
 // METHOD
-//===========================================================================================
+//==============================================================================
 	/* Initialize all components */
 	private void init(){
+        int h = getPreferredSize().height;
+        int w = getPreferredSize().width;
+
 		this.lblTitle.setHorizontalAlignment( SwingConstants.LEFT );
-		this.lblTitle.setPreferredSize( new Dimension( getPreferredSize().width / 3, getPreferredSize().height ) );
+		this.lblTitle.setPreferredSize( new Dimension( w / 3, h ) );
 		add( this.lblTitle );
 
-//		add( Box.createHorizontalGlue() );// separate on the left the label status and on the fight label title. 
+        // separate on the left the label status and on the fight label title.
+//		add( Box.createHorizontalGlue() );
 		add( new JSeparator( JSeparator.VERTICAL ) );
 
 		this.lblStatus.setHorizontalAlignment( SwingConstants.RIGHT );
-		this.lblStatus.setPreferredSize( new Dimension( getPreferredSize().width / 2, getPreferredSize().height ) );
+		this.lblStatus.setPreferredSize( new Dimension( w / 2, h ) );
 		add( this.lblStatus );
 	}
 
-//===========================================================================================
+//==============================================================================
 // SETTER
-//===========================================================================================
+//==============================================================================
 	/**
 	 * This method set the font of the two label.
 	 * @param f {@link Font}. If font is null nothing change.
@@ -109,7 +116,8 @@ public class JXStatusBar extends JPanel
 	}
 
 	/**
-	 * Set the status label of status bar. Pass null to doesn't display status label.
+	 * Set the status label of status bar. Pass null to doesn't display status
+     * label.
 	 * @param status {@link JXStatusBar}.
 	 */
 	public void setStatus(String status){
@@ -125,9 +133,9 @@ public class JXStatusBar extends JPanel
 		this.content = content;
 	}
 
-//===========================================================================================
+//==============================================================================
 // GETTER
-//===========================================================================================
+//==============================================================================
 	/** @return {@link String} represent the title displayed on status bar */
 	public String getTitle(){
 		return this.lblTitle.getText();

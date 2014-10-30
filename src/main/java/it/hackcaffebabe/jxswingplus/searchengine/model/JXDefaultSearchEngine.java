@@ -2,10 +2,10 @@ package it.hackcaffebabe.jxswingplus.searchengine.model;
 
 import javax.swing.Icon;
 
-
 /**
- * This is the default implementation of {@link JXSearchEngine}.
- * @see JXSearchEngine for more info.
+ * This is the default implementation of
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine}.
+ *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */

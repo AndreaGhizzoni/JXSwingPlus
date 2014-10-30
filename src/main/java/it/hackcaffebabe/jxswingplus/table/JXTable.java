@@ -1,5 +1,6 @@
 package it.hackcaffebabe.jxswingplus.table;
 
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
@@ -11,13 +12,27 @@ import javax.swing.table.TableRowSorter;
 
 
 /**
- * This class provide a simplification of using {@link JTable}.<br>
- * You may use a method to enable a row sorter with {@link JTextField} given to get the text to sort:
- * <pre>
- * myTable.setRowSorter( myFantasticTextField );
- * </pre>
- * myTable.refreshRowSorter() (When the model change you need to refresh the sorter with new model)
- * 
+ * This class provide a simplification of using {@link JTable}. You can use this
+ * class as a classic {@link JTable} with the model
+ * {@link it.hackcaffebabe.jxswingplus.table.model.JXTableModel} or, the
+ * the more powerful model,
+ * {@link it.hackcaffebabe.jxswingplus.table.model.JXObjectModel} of
+ * {@link it.hackcaffebabe.jxswingplus.table.model.DisplayableObject}.
+ *
+ * //TODO add a complete usage
+ *
+ * You may use a
+ * method to enable a row sorter with {@link JTextField} given to get the text
+ * to sort:
+ * <pre>{@code
+ * myTable.setRowSorter( myFantasticTextField )
+ * }</pre>
+ *
+ * And when the model change:
+ * <pre>{@code
+ * myTable.refreshRowSorter();
+ * }</pre>
+ *
  * You may need to get the index of selected row, so you can use:<br>
  * 	-<code> getSelectedViewRow()</code>: that returns the selected row of view of the table.<br>
  * 	-<code> getSelectedModelRow()</code>: that returns the selected row of model of the table.<br>
@@ -32,9 +47,7 @@ public class JXTable extends JTable
 	private TableRowSorter<TableModel> rowSorter;
 	private JTextField userTextFilter;
 
-	/**
-	 * Instance an empty table.
-	 */
+	/** Instance an empty table. */
 	public JXTable(){
 		super();
 	}
@@ -47,9 +60,9 @@ public class JXTable extends JTable
 		super( model );
 	}
 
-//====================================================================================================//
+//==============================================================================
 // METHOD
-//====================================================================================================//	
+//==============================================================================
 	/* this method is used for the Document Listener of userTextFilter */
 	private void search(){
 		try {
@@ -70,9 +83,9 @@ public class JXTable extends JTable
 		setRowSorter( this.rowSorter );
 	}
 
-//====================================================================================================//
+//==============================================================================
 // GETTER
-//====================================================================================================//	
+//==============================================================================
 	/**
 	 * This method returns the row selected from the view of table.<br>
 	 * It's equivalent as <code>getSelectedRow()</code> of {@link JTable}
@@ -84,7 +97,8 @@ public class JXTable extends JTable
 
 	/**
 	 * This method returns the row selected from the model of table.<br>
-	 * It's so usefully when the row of table are sorted to get the effective position of selected row from the model of data.
+	 * It's so usefully when the row of table are sorted to get the effective
+     * position of selected row from the model of data.
 	 * @return {@link Integer}the row selected from the model of table.
 	 */
 	public Integer getSelectedModelRow(){
@@ -94,12 +108,13 @@ public class JXTable extends JTable
 		else return -1;
 	}
 
-//====================================================================================================//
+//==============================================================================
 // SETTER
-//====================================================================================================//	
+//==============================================================================
 	/**
-	 * Sets the Row filter binded with {@link JTextField} given.<br>
-	 * At the JTextField given is binded a {@link DocumentListener} to catch every changes of text.
+	 * Sets the Row filter bind with {@link JTextField} given.<br>
+	 * At the JTextField given is bind a {@link DocumentListener} to catch every
+     * changes of text.
 	 * @param field {@link JTextField} to get the filter string.
 	 * @throws IllegalArgumentException if text field given is null.
 	 */

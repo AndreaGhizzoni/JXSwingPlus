@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
-import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -18,21 +17,23 @@ import javax.swing.SwingUtilities;
 
 /**
  * This class describe a common list witch each elements can be checked as a
- * common {@link JCheckBox}. JXCheckList needs to know the type of its elements
- * by:
+ * common {@link javax.swing.JCheckBox}. JXCheckList needs to know the type of
+ * its elements by:
  * <pre>{@code
  * JXCheckList<Integer> lstCheck = new JXCheckList<>();
  * }
  * </pre>
- * To add elements is the same as common {@link JList} instead of the elements
- * MUST be of type {@link JXCheckListEntry}. You can simply create the
- * appropriate model using:
+ * To add elements is the same as common {@link javax.swing.JList} instead of
+ * the elements MUST be of type
+ * {@link it.hackcaffebabe.jxswingplus.checklist.JXCheckListEntry}. You can
+ * simply create the appropriate model using:
  * <pre>{@code
  * List<Integer> list = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 );
  * DefaultListModel<JXCheckListEntry<Integer>> model = JXCheckBoxList.convertToModel( list, true );
  * lstCheck.setModel( model );
  * }</pre>
- * It's simply to add an {@link ActionListener} when user click on element to check it:
+ * It's simply to add an {@link java.awt.event.ActionListener} when user click
+ * on element to check it:
  * <pre>{@code
  * ActionListener evt = new ActionListener(){
  * 		public void actionPerformed(ActionEvent e){

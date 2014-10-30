@@ -6,9 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 /**
- * Test {@link JXCheckList}
+ * Test {@link it.hackcaffebabe.jxswingplus.checklist.JXCheckList}
  *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0

@@ -1,24 +1,16 @@
 package it.hackcaffebabe.jxswingplus.border;
 
-import it.hackcaffebabe.jxswingplus.border.JXRoundedBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.WindowConstants;
-
 
 /**
- * Test {@link JXRoundedBorder}
+ * Test {@link it.hackcaffebabe.jxswingplus.border.JXRoundedBorder}
  *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0

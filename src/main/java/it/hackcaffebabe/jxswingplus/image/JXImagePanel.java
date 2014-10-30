@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 
 /**
- * Simple Panel to view an Image given as {@link InputStream}.
+ * Simple Panel to view an Image given as {@link java.io.InputStream}.
  *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
@@ -20,7 +20,8 @@ public class JXImagePanel extends JPanel
 	private BufferedImage buf;
 
 	/**
-	 * Instance a Panel to display an Image. Panel size will be the same of loaded Image.
+	 * Instance a Panel to display an Image. Panel size will be the same of
+     * loaded Image.
 	 * @param file {@link InputStream} as image to view
 	 * @throws IOException if method can not read image file.
 	 */

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Default element for {@link JXCheckList}.
+ * Default element for {@link it.hackcaffebabe.jxswingplus.checklist.JXCheckList}.
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */

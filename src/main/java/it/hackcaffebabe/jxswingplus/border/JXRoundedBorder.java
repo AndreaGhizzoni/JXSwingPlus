@@ -14,7 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
 
 /**
- * This class provide the smoothed and rounded border for {@link JTextField}.
+ * This class provide the smoothed and rounded border for
+ * {@link javax.swing.JTextField}.
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */

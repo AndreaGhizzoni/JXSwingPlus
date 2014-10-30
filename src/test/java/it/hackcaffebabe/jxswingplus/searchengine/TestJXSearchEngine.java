@@ -14,7 +14,9 @@ import javax.swing.JPanel;
 
 
 /**
- * Test {@link JXSearchBar} and {@link JXDefaultSearchBarModel}
+ * Test {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXSearchBar} and
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXDefaultSearchBarModel}
+ *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */

@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * This is the render for {@link JXCheckList}
+ * //TODO make this package class or let the user to modify this
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */

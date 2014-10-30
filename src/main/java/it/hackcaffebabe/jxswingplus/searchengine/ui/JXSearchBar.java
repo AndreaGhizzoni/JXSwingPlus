@@ -1,7 +1,6 @@
 package it.hackcaffebabe.jxswingplus.searchengine.ui;
 
 import it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine;
-import it.hackcaffebabe.jxswingplus.searchengine.model.JXDefaultSearchEngine;
 
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -14,8 +13,10 @@ import javax.swing.UIManager;
 /**
  * Simple search bar UI component. This support the model
  * {@link JXDefaultSearchBarModel} that contains object of type
- * {@link JXSearchEngine}. You can use {@link JXDefaultSearchEngine} or
- * implements {@link JXSearchEngine} to create your own Engine class.
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine}.
+ * You can use
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXDefaultSearchEngine}
+ * or implements {@link JXSearchEngine} to create your own Engine class.
  * Here there is a simple use:
  * <pre>{@code
  * ActionListener l = new AbstractAction(){
@@ -26,12 +27,12 @@ import javax.swing.UIManager;
  * }
  *
  * JXSearchBar searchBar = new JXSearchBar(l);
- * searchBar.setModel(model); //assuming model is a {@link JXDefaultSearchBarModel}.
+ * searchBar.setModel(model); //assuming model is a JXDefaultSearchBarModel
  * }</pre>
  *
- * @see JXDefaultSearchBarModel
- * @see JXSearchEngine
- * @see JXDefaultSearchEngine
+ * @see it.hackcaffebabe.jxswingplus.searchengine.ui.JXDefaultSearchBarModel
+ * @see it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine
+ * @see it.hackcaffebabe.jxswingplus.searchengine.model.JXDefaultSearchEngine
  *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0

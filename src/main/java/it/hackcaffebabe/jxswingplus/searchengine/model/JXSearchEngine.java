@@ -6,8 +6,9 @@ import java.net.URL;
 
 
 /**
- * Default interface that you must implement to use {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXSearchBar}
- * with {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXDefaultSearchBarModel}.
+ * Default interface that you must implement to use
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXSearchBar} with
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXDefaultSearchBarModel}.
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */

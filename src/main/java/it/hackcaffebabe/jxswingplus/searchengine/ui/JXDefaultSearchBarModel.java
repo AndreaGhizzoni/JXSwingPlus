@@ -2,7 +2,6 @@ package it.hackcaffebabe.jxswingplus.searchengine.ui;
 
 import it.hackcaffebabe.jxswingplus.searchengine.model.JXDefaultSearchEngine;
 import it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,8 +10,9 @@ import javax.swing.AbstractListModel;
 import javax.swing.MutableComboBoxModel;
 
 /**
- * This is the model to carry the {@link JXSearchEngine} objects.
- * Here there is a simple way to use this class:
+ * This is the model to carry the
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine}
+ * objects. Here there is a simple way to use this class:
  * <pre>{@code
  * JXDefaultSearchEngine google = new JXDefaultSearchEngine("Google", "google.com", JXSearchEngine.GOOGLE_ICON );
  * JXDefaultSearchBarModel model = new JXDefaultSearchBarModel();
@@ -104,7 +104,7 @@ public class JXDefaultSearchBarModel extends AbstractListModel<JXSearchEngine> i
 
 	@Override
 	public void removeElement(Object obj){
-		if(obj != null && obj instanceof JXDefaultSearchEngine ) {
+		if(obj != null && obj instanceof JXDefaultSearchEngine) {
 			this.list.remove( obj );
 			fireContentsChanged( this, 0, this.list.size() );
 		}
