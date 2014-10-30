@@ -9,34 +9,25 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
+import javax.swing.text.JTextComponent;
 
 /**
  * This class provide a simplification of using {@link JTable}. You can use this
  * class as a classic {@link JTable} with the model
  * {@link it.hackcaffebabe.jxswingplus.table.model.JXTableModel} or, the
- * the more powerful model,
  * {@link it.hackcaffebabe.jxswingplus.table.model.JXObjectModel} of
  * {@link it.hackcaffebabe.jxswingplus.table.model.DisplayableObject}.
  *
- * //TODO add a complete usage
- *
- * You may use a
- * method to enable a row sorter with {@link JTextField} given to get the text
- * to sort:
+ * There is also a method to enable a row sorter with {@link javax.swing.JTextField}
+ * given to get the text to sort:
  * <pre>{@code
  * myTable.setRowSorter( myFantasticTextField )
  * }</pre>
- *
- * And when the model change:
+ * Remember: when the model change:
  * <pre>{@code
  * myTable.refreshRowSorter();
  * }</pre>
  *
- * You may need to get the index of selected row, so you can use:<br>
- * 	-<code> getSelectedViewRow()</code>: that returns the selected row of view of the table.<br>
- * 	-<code> getSelectedModelRow()</code>: that returns the selected row of model of the table.<br>
- * 
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
@@ -44,8 +35,9 @@ public class JXTable extends JTable
 {
 	private static final long serialVersionUID = 1L;
 
+    // "(?i)" this make regular expression case insensitive
+    private static final String pattern = "(?i)%s";
 	private TableRowSorter<TableModel> rowSorter;
-	private JTextField userTextFilter;
 
 	/** Instance an empty table. */
 	public JXTable(){
@@ -63,17 +55,6 @@ public class JXTable extends JTable
 //==============================================================================
 // METHOD
 //==============================================================================
-	/* this method is used for the Document Listener of userTextFilter */
-	private void search(){
-		try {
-			// "(?i)" this make regular expression case insensitive
-			RowFilter<TableModel, Object> rf = RowFilter.regexFilter( "(?i)" + userTextFilter.getText() );
-			rowSorter.setRowFilter( rf );
-		} catch(java.util.regex.PatternSyntaxException ex) {
-			//If current expression doesn't parse, don't update.
-		}
-	}
-
 	/**
 	 * This method refresh the sorter with new model of data.<br>
 	 * Needs to be called when the model change.
@@ -115,29 +96,14 @@ public class JXTable extends JTable
 	 * Sets the Row filter bind with {@link JTextField} given.<br>
 	 * At the JTextField given is bind a {@link DocumentListener} to catch every
      * changes of text.
-	 * @param field {@link JTextField} to get the filter string.
+	 * @param c {@link JTextComponent} to get the filter string.
 	 * @throws IllegalArgumentException if text field given is null.
 	 */
-	public void setRowSorter(JTextField field) throws IllegalArgumentException{
-		if(field == null)
+	public void setRowSorter(JTextComponent c ) throws IllegalArgumentException{
+		if(c == null)
 			throw new IllegalArgumentException( "Text field given can not be null" );
+        c.getDocument().addDocumentListener(new SearchListener(c));
 
-		this.userTextFilter = field;
-		this.userTextFilter.getDocument().addDocumentListener( new DocumentListener(){
-			public void changedUpdate(DocumentEvent e){
-				search();
-			}
-
-			public void insertUpdate(DocumentEvent e){
-				search();
-			}
-
-			public void removeUpdate(DocumentEvent e){
-				search();
-			}
-		} );
-
-		// in most cases when row sorter is activated there are already data into table model.
 		refreshRowSorter();
 	}
 
@@ -150,4 +116,35 @@ public class JXTable extends JTable
 	public void setCellEditorInColumn(int column, TableCellEditor editor) throws IllegalArgumentException{
 		getColumnModel().getColumn( column ).setCellEditor( editor );
 	}
+
+//==============================================================================
+// INNER CLASS
+//==============================================================================
+    // document listener to attach on the field
+    class SearchListener implements DocumentListener
+    {
+        private JTextComponent txt;
+        public SearchListener( JTextComponent t ){
+            this.txt = t;
+        }
+
+        /* this method is used for the Document Listener of userTextFilter */
+        private void search(){
+            try {
+                String f = String.format(pattern, txt.getText());
+                RowFilter<TableModel, Object> rf = RowFilter.regexFilter(f);
+                rowSorter.setRowFilter( rf );
+            } catch(java.util.regex.PatternSyntaxException ex) {
+                //If current expression doesn't parse, don't update.
+            }
+        }
+        @Override
+        public void insertUpdate(DocumentEvent e) { search(); }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) { search(); }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) { search(); }
+    }
 }
