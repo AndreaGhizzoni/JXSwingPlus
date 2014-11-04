@@ -5,6 +5,8 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 /**
+ * TODO maybe integrate a module that can decide if a table has not-editable columns or row
+ *
  * This is a simple model that manage the insertion or delete of rows. To
  * initialize the model you can use:
  * <pre>{@code
@@ -25,12 +27,9 @@ import javax.swing.table.AbstractTableModel;
 public class JXTableModel extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
-//	private String[] columnsNames = new String[] {};
-//	private Object[][] data = new Object[][] { {} };
     private Vector<Vector<Object>> data = new Vector<Vector<Object>>();
     private Vector<String> colsN = new Vector<String>();
     private Vector<Integer> nEditColumns = new Vector<Integer>();
-//	private List<Integer> nonEditableColumns;
 
     /**
      * Instance a Table model from data given and his column names.
@@ -84,11 +83,6 @@ public class JXTableModel extends AbstractTableModel
         Collections.addAll(r, row);
         this.data.addElement(r);
 
-//		Object[][] newData = new Object[this.data.length + 1][this.columnsNames.length];
-//		System.arraycopy( this.data, 0, newData, 0, this.data.length );
-//      System.arraycopy(row, 0, newData[newData.length - 1], 0, row.length);
-//		this.data = newData;
-
 		fireTableDataChanged();//update the render
 	}
 
@@ -96,30 +90,15 @@ public class JXTableModel extends AbstractTableModel
 	 * This method remove a row with specific index.
 	 * @param index {@link Integer} of row. First index start at 0.
 	 * @throws IllegalArgumentException if index is out of bound of model.
-	 * @throws IllegalStateException if there aren't rows in table.
 	 */
-	public void removeRow(int index) throws IllegalArgumentException, IllegalStateException{
+	public void removeRow(int index) throws IllegalArgumentException{
+        if(this.data.size() == 0)
+            return;// nothing to do.
+
 		if(index < 0 || index >= this.data.size())
 			throw new IllegalArgumentException( "Index of column can not be < 0 or > of table dimension." );
 
-        //TODO sure???
-		if(this.data.size() == 0)
-			throw new IllegalStateException( "There aren't rows in table." );
-
         this.data.remove(index);
-
-		//index--; //for human indexing
-//		Object[][] newData = new Object[this.data.length - 1][this.columnsNames.length];
-//       populate newData matrix without the 'index' row
-//		boolean deleted = false;
-//		for(int i = 0; i < this.data.length; i++) {
-//			if(i == index)
-//				deleted = true;
-//			else if(deleted)
-//				newData[i - 1] = this.data[i];
-//			else newData[i] = this.data[i];
-//		}
-//		this.data = newData;
 
 		fireTableDataChanged(); // update the render
 	}
@@ -143,15 +122,6 @@ public class JXTableModel extends AbstractTableModel
 		this.setData( data );
 	}
 
-    /**
-     * //TODO add doc
-     * @param names
-     * @throws IllegalArgumentException
-     */
-    public void setColumnsNames(String[] names) throws IllegalArgumentException{
-        this.setColumnNames(names, null);
-    }
-
 	/**
 	 * Set column names of Table Model with, if is necessary, list of columns
      * not editable.
@@ -172,7 +142,6 @@ public class JXTableModel extends AbstractTableModel
         this.colsN.clear();
         Collections.addAll(this.colsN, names);
 
-//		this.columnsNames = names;
 		this.setColumnNotEditable(colNotEditable);
 	}
 
@@ -207,7 +176,7 @@ public class JXTableModel extends AbstractTableModel
 	}
 
     /**
-     * TODO add doc
+     * Set the column not-editable by specify the indexes of columns.
      * @param cols
      */
     public void setColumnNotEditable(Integer... cols) throws IllegalArgumentException{
@@ -231,7 +200,6 @@ public class JXTableModel extends AbstractTableModel
             this.data.add(tmp);
         }
 
-//        this.data = data;
 		fireTableDataChanged();
 	}
 
@@ -278,10 +246,6 @@ public class JXTableModel extends AbstractTableModel
 			return null;
 
         return this.data.get(index);
-//		ArrayList<Object> lineToReturn = new ArrayList<Object>();
-//		for(int i = 0; i < getColumnCount(); i++)
-//			lineToReturn.add( (String) getValueAt( index, i ) );
-//		return lineToReturn;
 	}
 
 //==============================================================================
@@ -290,13 +254,11 @@ public class JXTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount(){
         return this.colsN.size();
-//		return columnsNames.length;
 	}
 
 	@Override
 	public int getRowCount(){
         return this.data.size();
-//		return data.length;
 	}
 
 	@Override
@@ -305,7 +267,6 @@ public class JXTableModel extends AbstractTableModel
 			throw new IllegalArgumentException( "Column can not be less of zero." );
 
         return this.colsN.get(col);
-//		return columnsNames[col];
 	}
 
 	@Override
@@ -314,7 +275,6 @@ public class JXTableModel extends AbstractTableModel
 			throw new IllegalArgumentException( "Row or Column can not be greater than row count or column count." );
 
         return this.data.get(row).get(col);
-//		return data[row][col];
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -332,8 +292,6 @@ public class JXTableModel extends AbstractTableModel
 	@Override
 	public void setValueAt(Object value, int row, int col){
         this.data.get(row).set(col,value);
-//		data[row][col] = value;
-//		fireTableCellUpdated( row, col );
         fireTableDataChanged();
 	}
 }

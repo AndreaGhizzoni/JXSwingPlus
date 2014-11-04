@@ -1,6 +1,5 @@
 package it.hackcaffebabe.jxswingplus.table;
 
-import it.hackcaffebabe.jxswingplus.table.JXTable;
 import it.hackcaffebabe.jxswingplus.table.model.JXTableModel;
 import java.util.Arrays;
 import java.util.List;
@@ -23,36 +22,30 @@ import javax.swing.JLabel;
 
 
 /**
- * Simple Class to test {@link JXTable} and {@link JXTableModel}.
+ * Simple Class to test {@link it.hackcaffebabe.jxswingplus.table.JXTable} and
+ * {@link it.hackcaffebabe.jxswingplus.table.model.JXTableModel}.
  *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class TestJXTable extends JFrame
+public class TestJXTableModel extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private final Dimension size = new Dimension( 790, 490 );
 
 	private JPanel contentPane = new JPanel();
 	private JXTable table;
-	private JButton btnAddRow;
-	private JTextField txtSelectedRow;
-	private JButton btnDelRow;
-	private JTextField txtFilter;
+    private JTextField txtSelectedRow;
 
-	/**
-	 * Create the frame.
-	 */
-	public TestJXTable(){
+	/** Create the frame. */
+	public TestJXTableModel(){
 		super( "Test JXTable with JXTableModel" );
 		this.initGUI();
-
-		this.table.setRowSorter( this.txtFilter );// sorter feature!
 	}
 
-//====================================================================================================//
+//==============================================================================
 // METHOD
-//====================================================================================================//
+//==============================================================================
 	/* Initialize all components */
 	private void initGUI(){
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -62,7 +55,7 @@ public class TestJXTable extends JFrame
 				(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2 - this.size.height / 2) );
 
 		contentPane.setBorder( new EmptyBorder( 5, 5, 5, 5 ) );
-		contentPane.setLayout( new MigLayout( "", "[118.00][142.00,grow][grow]", "[336.00,grow][36.00][59.00]" ) );
+		contentPane.setLayout( new MigLayout( "", "[118.00][142.00,grow][grow]", "[336.00,grow][59.00]" ) );
 
 		this.table = new JXTable( this.getEmptyTableModel() );
 		this.table.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );// selection mode
@@ -72,49 +65,42 @@ public class TestJXTable extends JFrame
 		scrollPane.setViewportView( this.table );
 		contentPane.add( scrollPane, "cell 0 0 3 1,grow" );
 
-		this.btnAddRow = new JButton( "Add Row" );
-		this.btnAddRow.addActionListener( new AddRowActionListener() );
-		contentPane.add( btnAddRow, "flowx,cell 0 2 3 1" );
-
-		contentPane.add( new JLabel( "String Filter" ), "cell 0 1,alignx right" );
-
-		this.txtFilter = new JTextField();
-		this.txtFilter.setColumns( 10 );
-		contentPane.add( this.txtFilter, "cell 1 1 2 1,growx" );
+        JButton btnAddRow = new JButton("Add Row");
+		btnAddRow.addActionListener(new AddRowActionListener());
+		contentPane.add(btnAddRow, "flowx,cell 0 1 3 1" );
 
 		this.txtSelectedRow = new JTextField();
 		this.txtSelectedRow.setColumns( 3 );
 		this.txtSelectedRow.setEditable( false );
-		contentPane.add( txtSelectedRow, "cell 1 2 2 1" );
+		contentPane.add( txtSelectedRow, "cell 1 1 2 1" );
 
-		this.btnDelRow = new JButton( "Del Row" );
-		this.btnDelRow.addActionListener( new DelRowActionListener() );
-		contentPane.add( btnDelRow, "cell 1 2 2 1" );
+        JButton btnDelRow = new JButton("Del Row");
+		btnDelRow.addActionListener(new DelRowActionListener());
+		contentPane.add(btnDelRow, "cell 1 1 2 1" );
 
 		setContentPane( contentPane );
 	}
 
-//====================================================================================================//
+//==============================================================================
 // GETTER
-//====================================================================================================//
+//==============================================================================
 	/* This method initialize the contact table model. */
 	private JXTableModel getEmptyTableModel(){
-		JXTableModel model = new JXTableModel();
-
 		// array of column names
 		String[] columnNames = new String[] { "Column0", "Column1", "Column2", "Column3" };
 		// list of not editable column index
 		List<Integer> columnNotEditable = Arrays.asList( 0, 1, 2, 3 );
 
+        JXTableModel model = new JXTableModel();
 		model.setColumnNames( columnNames, columnNotEditable );
 		model.setData( new Object[][] {} );
 
 		return model;
 	}
 
-//====================================================================================================//
+//==============================================================================
 // INNER CLASS
-//====================================================================================================//
+//==============================================================================
 	/* Inner class that describe the event of row selection from the Table. */
 	private class TableSelectionListener implements ListSelectionListener
 	{
@@ -153,15 +139,15 @@ public class TestJXTable extends JFrame
 		}
 	}
 
-//====================================================================================================//
+//==============================================================================
 // MAIN
-//====================================================================================================//
+//==============================================================================
 	/* Launch the application. */
 	public static void main(String[] args){
 		EventQueue.invokeLater( new Runnable(){
 			public void run(){
 				try {
-					TestJXTable frame = new TestJXTable();
+					TestJXTableModel frame = new TestJXTableModel();
 					frame.setVisible( true );
 				}
 				catch(Exception e) {
