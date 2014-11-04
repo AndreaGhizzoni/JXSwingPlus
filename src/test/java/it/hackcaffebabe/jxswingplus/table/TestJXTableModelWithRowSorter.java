@@ -15,7 +15,7 @@ import java.util.Random;
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class TestJXTableWithRowSorter extends JFrame
+public class TestJXTableModelWithRowSorter extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private final Dimension size = new Dimension( 790, 490 );
@@ -27,7 +27,7 @@ public class TestJXTableWithRowSorter extends JFrame
     private Random random = new Random(System.currentTimeMillis());
 
 	/** Create the frame. */
-	public TestJXTableWithRowSorter(){
+	public TestJXTableModelWithRowSorter(){
 		super( "Test JXTable with JXTableModel and RowSorter" );
 		this.initGUI();
 
@@ -100,7 +100,7 @@ public class TestJXTableWithRowSorter extends JFrame
 		EventQueue.invokeLater( new Runnable(){
 			public void run(){
 				try {
-					TestJXTableWithRowSorter frame = new TestJXTableWithRowSorter();
+					TestJXTableModelWithRowSorter frame = new TestJXTableModelWithRowSorter();
 					frame.setVisible( true );
 				}
 				catch(Exception e) {
