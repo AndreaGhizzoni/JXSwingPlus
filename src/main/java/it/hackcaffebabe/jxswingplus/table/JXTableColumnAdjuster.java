@@ -12,10 +12,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-
 /**
- * Class to manage the widths of columns in a table.<br>
- * To adjust all the columns widths just call <code>adjustColumns()</code> each time models change.<br>
+ * Class to manage the widths of columns in a table. To adjust all the columns
+ * widths just call <code>adjustColumns()</code> each time models change.
  * Finally various properties control how the width of the column is calculated.
  *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
@@ -28,7 +27,6 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 	private boolean isColumnHeaderIncluded;
 	private boolean isColumnDataIncluded;
 	private boolean isOnlyAdjustLarger;
-//	private boolean isDynamicAdjustment; // maybe fix this feature instead to remove it
  	private Map<TableColumn, Integer> columnSizes = new HashMap<TableColumn, Integer>();// used into restoreColumns()
 
 	/**
@@ -50,15 +48,12 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 		setColumnHeaderIncluded( true );
 		setColumnDataIncluded( true );
 		setOnlyAdjustLarger( true );
-//		setDynamicAdjustment( false );
 	}
 
-//====================================================================================================//
+//==============================================================================
 // METHOD
-//====================================================================================================//
-	/**
-	 * Adjust the widths of all the columns in the table
-	 */
+//==============================================================================
+	/** Adjust the widths of all the columns in the table */
 	public void adjustColumns(){
 		for(int i = 0; i < table.getColumnModel().getColumnCount(); i++)
 			adjustColumn( i );
@@ -94,7 +89,7 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 		if(isOnlyAdjustLarger)
 			width = Math.max( width, tableColumn.getPreferredWidth() );
 
-		columnSizes.put( tableColumn, new Integer( tableColumn.getWidth() ) );
+		columnSizes.put( tableColumn, tableColumn.getWidth());
 		table.getTableHeader().setResizingColumn( tableColumn );
 		tableColumn.setWidth( width );
 	}
@@ -114,13 +109,13 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 
 		if(width != null) {
 			table.getTableHeader().setResizingColumn( tableColumn );
-			tableColumn.setWidth( width.intValue() );
+			tableColumn.setWidth(width);
 		}
 	}
 
-//====================================================================================================//
+//==============================================================================
 // GETTER
-//====================================================================================================//
+//==============================================================================
 	/* Calculated the width based on the column name. */
 	private int getColumnHeaderWidth(int column){
 		if(!isColumnHeaderIncluded)
@@ -128,8 +123,8 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 
 		TableColumn tableColumn = table.getColumnModel().getColumn( column );
 		Object value = tableColumn.getHeaderValue();
-		TableCellRenderer renderer = tableColumn.getHeaderRenderer();
 
+		TableCellRenderer renderer = tableColumn.getHeaderRenderer();
 		if(renderer == null)
 			renderer = table.getTableHeader().getDefaultRenderer();
 
@@ -137,7 +132,8 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 		return c.getPreferredSize().width;
 	}
 
-	/* Calculate the width based on the widest cell renderer for the given column. */
+	/* Calculate the width based on the widest cell renderer
+	 * for the given column. */
 	private int getMaxColumnDataWidth(int column){
 		if(!isColumnDataIncluded)
 			return 0;
@@ -147,7 +143,7 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 
 		for(int row = 0; row < table.getRowCount(); row++) {
 			preferredWidth = Math.max( preferredWidth, getCellDataWidth( row, column ) );
-//			//  We've exceeded the maximum width, no need to check other rows
+			//  We've exceeded the maximum width, no need to check other rows
 			if(preferredWidth >= maxWidth)
 				break;
 		}
@@ -158,15 +154,14 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 	/* Get the preferred width for the specified cell. */
 	private int getCellDataWidth(int row, int column){
 		// Invoke the renderer for the cell to calculate the preferred width
-
 		TableCellRenderer cellRenderer = table.getCellRenderer( row, column );
 		Component c = table.prepareRenderer( cellRenderer, row, column );
 		return c.getPreferredSize().width + table.getIntercellSpacing().width;
 	}
 
-//====================================================================================================//
+//==============================================================================
 // SETTER
-//====================================================================================================//
+//==============================================================================
 	/**
 	 * Indicates whether to include the header in the width calculation.
 	 * @param isColumnHeaderIncluded {@link Boolean}
@@ -191,30 +186,9 @@ public class JXTableColumnAdjuster implements PropertyChangeListener, TableModel
 		this.isOnlyAdjustLarger = isOnlyAdjustLarger;
 	}
 
-//	/**
-//	 * Indicate whether changes to the model should cause the width to be dynamically recalculated.
-//	 * @param isDynamicAdjustment {@link Boolean}
-//	 */
-//	public void setDynamicAdjustment(boolean isDynamicAdjustment){
-//		//  May need to add or remove the TableModelListener when changed
-//
-//		if(this.isDynamicAdjustment != isDynamicAdjustment) {
-//			if(isDynamicAdjustment) {
-//				table.addPropertyChangeListener( this );
-//				table.getModel().addTableModelListener( this );
-//			}
-//			else {
-//				table.removePropertyChangeListener( this );
-//				table.getModel().removeTableModelListener( this );
-//			}
-//		}
-//
-//		this.isDynamicAdjustment = isDynamicAdjustment;
-//	}
-
-//====================================================================================================//
+//==============================================================================
 // OVERRIDE
-//====================================================================================================//
+//==============================================================================
 	@Override
 	public void propertyChange(PropertyChangeEvent e){
 		//  When the TableModel changes we need to update the listeners
