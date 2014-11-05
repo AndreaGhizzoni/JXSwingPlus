@@ -71,20 +71,28 @@ public class JXTableModel extends AbstractTableModel
 // METHOD
 //==============================================================================
 	/**
-	 * This method a row at the bottom of {@link JTable}.
+	 * This method add row at the bottom of {@link JTable}.
 	 * @param row {@link Object} as array to add at the bottom of {@link JTable}.
 	 * @throws IllegalArgumentException if row is null or length = 0.
 	 */
 	public void addRow(Object[] row) throws IllegalArgumentException{
-		if(row == null || row.length == 0)
-			throw new IllegalArgumentException( "Row to add can not be null or void." );
-
         Vector<Object> r = new Vector<Object>();
         Collections.addAll(r, row);
-        this.data.addElement(r);
-
-		fireTableDataChanged();//update the render
+        this.addRow(r);
 	}
+
+    /**
+     * This method add a row at the bottom {@link JTable}
+     * @param row {@link Vector} of {@link Object}.
+     * @throws IllegalArgumentException if row is null or size == 0.
+     */
+    public void addRow(Vector<Object> row) throws IllegalArgumentException{
+        if(row == null || row.size() == 0)
+            throw new IllegalArgumentException( "Row to add can not be null or void." );
+
+        this.data.add( row );
+        fireTableDataChanged();//update the render
+    }
 
 	/**
 	 * This method remove a row with specific index.
@@ -148,28 +156,28 @@ public class JXTableModel extends AbstractTableModel
 	/**
 	 * Set the column non-editable by specify a list of column index. Set null
      * if you want to make all table editable.
-	 * @param columnsNotEditable {@link ArrayList} as list of index of
+	 * @param colsNotEditable {@link ArrayList} as list of index of
      *                                            non-editable columns.
      *                                            First column is 0.
-	 * @throws IllegalArgumentException if size of columnsNotEditable is 0 or 
+	 * @throws IllegalArgumentException if size of colsNotEditable is 0 or
 	 * index of columns non-editable are zero or greater column's names size.
 	 */
-	public void setColumnNotEditable(List<Integer> columnsNotEditable) throws IllegalArgumentException{
-		if(columnsNotEditable != null) {
-			if(columnsNotEditable.size() == 0)
+	public void setColumnNotEditable(List<Integer> colsNotEditable) throws IllegalArgumentException{
+		if(colsNotEditable != null) {
+			if(colsNotEditable.size() == 0)
 				throw new IllegalArgumentException( "Argument given can not be null or size == 0." );
 
-			Collections.sort( columnsNotEditable );
+			Collections.sort( colsNotEditable );
             int tmp;
-			for(int i = 0; i < columnsNotEditable.size(); i++) {
-                tmp = columnsNotEditable.get(i);
+			for(int i = 0; i < colsNotEditable.size(); i++) {
+                tmp = colsNotEditable.get(i);
                 if ( tmp < 0 || tmp >= this.colsN.size() )
-                    throw new IllegalArgumentException("Column non-editable are incorrect. It's must be in range 0-"
+                    throw new IllegalArgumentException("Column not-editable are incorrect. It's must be in range 0-"
                             + (this.colsN.size()-1));
             }
 
 			this.nEditColumns.clear();
-            this.nEditColumns.addAll(columnsNotEditable);
+            this.nEditColumns.addAll(colsNotEditable);
 		}else{
             this.nEditColumns.clear();
         }
@@ -177,22 +185,41 @@ public class JXTableModel extends AbstractTableModel
 
     /**
      * Set the column not-editable by specify the indexes of columns.
-     * @param cols
+     * @param cols {@link Integer} the indexes of not-editable columns.
      */
     public void setColumnNotEditable(Integer... cols) throws IllegalArgumentException{
         this.setColumnNotEditable(Arrays.asList(cols));
     }
 
 	/**
-	 * Set data of Table Model. 
-	 * @param data {@link Object} as matrix of Object of data table
-	 * @throws IllegalArgumentException if argument is null.
+	 * Replace the data of Table Model. Pass null to clear the data in Table
+     * Model.
+	 * @param data {@link Object} as matrix of Object of data table.
 	 */
-	public void setData(Object[][] data) throws IllegalArgumentException{
-		if(data == null)
+	public void setData(Object[][] data){
+        this.data.clear();
+
+		if(data != null) {
+            Vector<Object> tmp;
+            for (Object[] i : data) {
+                tmp = new Vector<Object>();
+                Collections.addAll(tmp, i);
+                this.data.add(tmp);
+            }
+        }
+
+		fireTableDataChanged();
+	}
+
+    /**
+     * This method add all the data give into Table Model.
+     * @param data {@link Object} as matrix of Object of data table
+     * @throws IllegalArgumentException if argument is null
+     */
+    public void addData(Object[][] data) throws IllegalArgumentException{
+        if(data == null)
 			throw new IllegalArgumentException( "Data can not be null." );
 
-        this.data.clear();
         Vector<Object> tmp;
         for(Object[] i: data) {
             tmp = new Vector<Object>();
@@ -201,7 +228,7 @@ public class JXTableModel extends AbstractTableModel
         }
 
 		fireTableDataChanged();
-	}
+    }
 
 //==============================================================================
 // GETTER
