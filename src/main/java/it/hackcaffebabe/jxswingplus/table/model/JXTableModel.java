@@ -5,8 +5,6 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * TODO maybe integrate a module that can decide if a table has not-editable columns or row
- *
  * This is a simple model that manage the insertion or delete of rows. To
  * initialize the model you can use:
  * <pre>{@code

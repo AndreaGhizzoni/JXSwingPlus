@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-
 /**
  * This is a simplified table model to manage heterogeneous data types.
- * All objects saved into the model must extends {@link DisplayableObject}.
+ * All objects saved into the model must extends
+ * {@link it.hackcaffebabe.jxswingplus.table.model.DisplayableObject}.
  *   
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class JXObjectModel <T extends DisplayableObject> extends AbstractTableModel
+public class JXObjectModel<T extends DisplayableObject> extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 	private List<T> data = new ArrayList<T>();
 
 	/**
-	 * Instance a model to show a set of objects of the same class T.<br>
+	 * Instance a model to show a set of objects of the same class T.
 	 * @param data {@link List} of object to display into a table.
 	 * @throws IllegalArgumentException if data is null or empty.
 	 */
@@ -26,19 +26,17 @@ public class JXObjectModel <T extends DisplayableObject> extends AbstractTableMo
 		this.addObjects( data );
 	}
 
-	/**
-	 * Instance an empty model to show a set of objects of the same class T.<br>
-	 */
+	/** Instance an empty model to show a set of objects of the same class T. */
 	public JXObjectModel(){
 		fireTableDataChanged();
 	}
 
-//====================================================================================================//
+//==============================================================================
 // METHOD
-//====================================================================================================//
+//==============================================================================
 	/**
 	 * Append the object given at the end of table.
-	 * @param obj object to append.
+	 * @param obj of class T object to append.
 	 * @throws IllegalArgumentException if object given is null.
 	 */
 	public void addObject(T obj) throws IllegalArgumentException{
@@ -62,9 +60,7 @@ public class JXObjectModel <T extends DisplayableObject> extends AbstractTableMo
 		fireTableDataChanged();
 	}
 
-	/**
-	 * Remove all objects in the model.
-	 */
+	/** Remove all objects in the model. */
 	public void removeAll(){
 		if(this.data.isEmpty())
 			return;
@@ -74,41 +70,41 @@ public class JXObjectModel <T extends DisplayableObject> extends AbstractTableMo
 	}
 
 	/**
-	 * Remove object at specified index.<br>
-	 * @param index {@link Integer} the index of object to remove.
+	 * Remove object at specified index.
+	 * @param index int the index of object to remove.
 	 * @throws IndexOutOfBoundsException if index is out of range 0-table rows.
 	 */
 	public void removeObject(int index) throws IndexOutOfBoundsException{
 		if(index < 0 || index > this.data.size())
-			throw new IndexOutOfBoundsException( "Index must in range 0-" + this.data.size() + "." );
+			throw new IndexOutOfBoundsException( "Index must in range 0-" + this.data.size() );
 
 		this.data.remove( index );
 		fireTableDataChanged();
 	}
 
 	/**
-	 * Remove the object from the model.
-	 * If object there is into the model will be removed, otherwise nothing.
-	 * @param obj the object to remove.
-	 * @throws IllegalArgumentException if object to add is null.
+	 * Remove the object from the model. If object there is into the model will
+	 * be removed, otherwise nothing.
+	 * @param obj T the object to remove.
+	 * @throws IllegalArgumentException if argument is null is null.
 	 */
 	public void removeObject(T obj) throws IllegalArgumentException{
 		if(obj == null)
 			throw new IllegalArgumentException( "Object to get can not be null." );
 
 		int i = this.data.indexOf( obj );
-		if(i != -1)
-			this.removeObject( i );
-
-		fireTableDataChanged();
+		if(i != -1) {
+			this.removeObject(i);
+			fireTableDataChanged();
+		}
 	}
 
-//====================================================================================================//
+//==============================================================================
 // GETTER
-//====================================================================================================//	
+//==============================================================================
 	/**
 	 * Return the object with his index from the model.
-	 * @param row {@link Integer} the index of row.
+	 * @param row int the index of row.
 	 * @return object from the model.
 	 * @throws IndexOutOfBoundsException if index is out of range 0-model's row.
 	 */
@@ -127,9 +123,9 @@ public class JXObjectModel <T extends DisplayableObject> extends AbstractTableMo
 		return this.data;
 	}
 
-//====================================================================================================//
+//==============================================================================
 // OVERRIDE
-//====================================================================================================//	
+//==============================================================================
 	@Override
 	public int getColumnCount(){
 		if(this.data.isEmpty())
@@ -150,15 +146,14 @@ public class JXObjectModel <T extends DisplayableObject> extends AbstractTableMo
 	}
 
 	@Override
-	public Object getValueAt(int row, int col){
-		if(row > this.data.size())
-			return null;
-		else {
-			Object[] dr = this.data.get( row ).getDisplayRow();
-			if(col > dr.length)
-				return null;
-			else return dr[col];
-		}
+	public Object getValueAt(int row, int col) throws IllegalArgumentException{
+		if( row >= this.data.size() )
+			throw new IllegalArgumentException( "Row can not be greater than row count." );
+
+        Object[] dr = this.data.get( row ).getDisplayRow();
+        if(col > dr.length)
+			throw new IllegalArgumentException( "Column can not be greater than column count." );
+        else return dr[col];
 	}
 
 	@Override
@@ -170,19 +165,16 @@ public class JXObjectModel <T extends DisplayableObject> extends AbstractTableMo
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int c){
 		if(this.data.isEmpty())
-			return String.class;
-		else {
-			Object o = getValueAt( 0, c );
-			return o.getClass();
-		}
+			return DisplayableObject.class;
+		else
+			return getValueAt( 0, c ).getClass();
 	}
 
 	@Override
 	public boolean isCellEditable(int row, int col){
-		if(this.data.isEmpty())
-			return true;
-		else if(this.data.get( row ).getColumnNotEditable().contains( col ))
-			return false;
-		else return true;
+//		if(this.data.isEmpty())
+//			return true;
+//		else return !this.data.get(row).getColumnNotEditable().contains(col);
+		return !this.data.get(row).getColumnNotEditable().contains(col);
 	}
 }
