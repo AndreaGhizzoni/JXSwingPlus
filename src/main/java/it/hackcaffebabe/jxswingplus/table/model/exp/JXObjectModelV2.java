@@ -11,8 +11,8 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 	private Vector<String> colNames = new Vector<String>();
 	private Vector<T> objects = new Vector<T>();
 
-	public JXObjectModelV2( String[] colNames ){
-		Collections.addAll(this.colNames, colNames);
+	public JXObjectModelV2( String[] colNames ) throws IllegalArgumentException{
+		this.setColumnNames(colNames);
 	}
 
 //==============================================================================
@@ -24,6 +24,17 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 
 		this.objects.add(obj);
 		fireTableDataChanged();
+	}
+
+//==============================================================================
+// SETTER
+//==============================================================================
+	public void setColumnNames( String[] colNames ) throws IllegalArgumentException{
+		if(colNames == null || colNames.length == 0 )
+			throw new IllegalArgumentException("Column Names can not be null.");
+
+		this.colNames.clear();
+		Collections.addAll(this.colNames, colNames);
 	}
 
 //	public void removeAll(){
@@ -103,7 +114,10 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 
 	@Override
 	public void setValueAt(Object value, int row, int col){
-		this.objects.get( row ).getDisplayRaw()[col] = value;
+		T r = this.objects.get(row);
+		if(col >= r.getDisplayRaw().length)
+			return;
+		r.getDisplayRaw()[col] = value;
 		fireTableCellUpdated( row, col );
 	}
 
