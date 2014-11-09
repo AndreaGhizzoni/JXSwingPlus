@@ -1,5 +1,7 @@
 package it.hackcaffebabe.jxswingplus.table.model.exp;
 
+import it.hackcaffebabe.jxswingplus.table.model.JXObjectModel;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Vector;
@@ -9,10 +11,16 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 	private static final long serialVersionUID = 1L;
 
 	private Vector<String> colNames = new Vector<String>();
+	private Vector<Integer> colNotEdit = new Vector<Integer>();
 	private Vector<T> objects = new Vector<T>();
 
-	public JXObjectModelV2( String[] colNames ) throws IllegalArgumentException{
+	public JXObjectModelV2( String[] colNames, Integer...colNotEditable ) throws IllegalArgumentException{
 		this.setColumnNames(colNames);
+		this.setColumnNotEditable(colNotEditable);
+	}
+
+    public JXObjectModelV2( String[] colNames ) throws IllegalArgumentException{
+		this(colNames, null);
 	}
 
 //==============================================================================
@@ -37,32 +45,51 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 		Collections.addAll(this.colNames, colNames);
 	}
 
-//	public void removeAll(){
-//		if(this.data.isEmpty())
-//			return;
-//
-//		this.data.clear();
-//		fireTableDataChanged();
-//	}
+	public void setColumnNotEditable( Integer... colNotEditable ) throws IllegalArgumentException{
+		if(colNotEditable != null){
+			if( colNotEditable.length == 0 )
+				throw new IllegalArgumentException("Column not-editable can not be void.");
 
-//	public void removeObject(int index) throws IndexOutOfBoundsException{
-//		if(index < 0 || index > this.data.size())
-//			throw new IndexOutOfBoundsException( "Index must in range 0-" + this.data.size() );
-//
-//		this.data.remove( index );
-//		fireTableDataChanged();
-//	}
+			for( Integer aColNotEditable : colNotEditable) {
+				if (aColNotEditable < 0 || aColNotEditable >= this.colNotEdit.size())
+					throw new IllegalArgumentException("Column not-editable are incorrect. It's must be in range 0-"
+							+ (this.colNotEdit.size() - 1));
+			}
 
-//	public void removeObject(T obj) throws IllegalArgumentException{
-//		if(obj == null)
-//			throw new IllegalArgumentException( "Object to get can not be null." );
-//
-//		int i = this.data.indexOf( obj );
-//		if(i != -1) {
-//			this.removeObject(i);
-//			fireTableDataChanged();
-//		}
-//	}
+			this.colNotEdit.clear();
+			Collections.addAll(this.colNotEdit, colNotEditable);
+		}else{
+			this.colNotEdit.clear();
+		}
+	}
+
+	public void removeAll(){
+		if(this.objects.isEmpty())
+			return;
+
+		this.objects.clear();
+		fireTableDataChanged();
+	}
+
+	public void removeObject(int index) throws IndexOutOfBoundsException{
+		if(index < 0 || index >= this.objects.size())
+			throw new IndexOutOfBoundsException( "Index must in range 0-" +
+					this.objects.size() );
+
+		this.objects.remove( index );
+		fireTableDataChanged();
+	}
+
+	public void removeObject(T obj) throws IllegalArgumentException{
+		if(obj == null)
+			throw new IllegalArgumentException( "Object to remove can not be null." );
+
+		int i = this.objects.indexOf(obj);
+		if(i != -1) {
+			this.removeObject(i);
+			fireTableDataChanged();
+		}
+	}
 
 //==============================================================================
 // GETTER
@@ -75,9 +102,9 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 		return this.objects.get(row);
 	}
 
-//	public List<T> getObjects(){
-//		return this.data;
-//	}
+	public Vector<T> getObjects(){
+		return this.objects;
+	}
 
 //==============================================================================
 // OVERRIDE
@@ -131,7 +158,6 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 
 	@Override
 	public boolean isCellEditable(int row, int col){
-		return false; // TODO think how to do this
-//		return !this.data.get(row).getColumnNotEditable().contains(col);
+		return !this.colNotEdit.contains(col);
 	}
 }
