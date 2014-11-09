@@ -1,11 +1,18 @@
 package it.hackcaffebabe.jxswingplus.table.model.exp;
 
-import it.hackcaffebabe.jxswingplus.table.model.JXObjectModel;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Vector;
 
+/**
+ * This class is a simplified table model to manage heterogeneous data type.
+ * This model can manage objects that implements
+ * {@link it.hackcaffebabe.jxswingplus.table.model.exp.Displayable}.
+ *
+ * //TODO add example.
+ *
+ * @param <T>
+ */
 public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
@@ -14,18 +21,38 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 	private Vector<Integer> colNotEdit = new Vector<Integer>();
 	private Vector<T> objects = new Vector<T>();
 
+	/**
+	 * Instance the model with the column names and a list of not editable
+	 * columns as index.
+	 * @param colNames {@link String} array string of column names.
+	 * @param colNotEditable {@Integer} list of index of column not editable
+	 * @throws IllegalArgumentException if arguments given are null or empty array.
+	 */
 	public JXObjectModelV2( String[] colNames, Integer...colNotEditable ) throws IllegalArgumentException{
 		this.setColumnNames(colNames);
 		this.setColumnNotEditable(colNotEditable);
 	}
 
+	/**
+	 * Instance the model with column names and leave all columns editable.
+	 * @param colNames {@link String} array string of column names.
+	 * @throws IllegalArgumentException if argument given is null or empty.
+	 */
     public JXObjectModelV2( String[] colNames ) throws IllegalArgumentException{
 		this(colNames, null);
 	}
 
+	/** Instance a empty model */
+	public JXObjectModelV2(){}
+
 //==============================================================================
 // METHOD
 //==============================================================================
+	/**
+	 * This method add an object to the model.
+	 * @param obj the object to add.
+	 * @throws IllegalArgumentException if argument given is null.
+	 */
 	public void addObject(T obj) throws IllegalArgumentException{
 		if(obj == null)
 			throw new IllegalArgumentException( "Object to display can not be null." );
@@ -37,6 +64,11 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 //==============================================================================
 // SETTER
 //==============================================================================
+	/**
+	 * This method set the column names for this model.
+	 * @param colNames {@link String} array string of column names.
+	 * @throws IllegalArgumentException if argument is null or empty array.
+	 */
 	public void setColumnNames( String[] colNames ) throws IllegalArgumentException{
 		if(colNames == null || colNames.length == 0 )
 			throw new IllegalArgumentException("Column Names can not be null.");
@@ -45,6 +77,11 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 		Collections.addAll(this.colNames, colNames);
 	}
 
+	/**
+	 * This method se the column not editable by given a list of column indexes.
+	 * @param colNotEditable {@link Integer} list of indexes.
+	 * @throws IllegalArgumentException if argument is null or empty array.
+	 */
 	public void setColumnNotEditable( Integer... colNotEditable ) throws IllegalArgumentException{
 		if(colNotEditable != null){
 			if( colNotEditable.length == 0 )
@@ -63,6 +100,7 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 		}
 	}
 
+	/** This method removes all the object in the model. */
 	public void removeAll(){
 		if(this.objects.isEmpty())
 			return;
@@ -71,6 +109,11 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 		fireTableDataChanged();
 	}
 
+	/**
+	 * This method remove the specific object from the model if exists.
+	 * @param index {@link Integer} the model index of the object.
+	 * @throws IndexOutOfBoundsException if index < 0 or >= getObjects().size()
+	 */
 	public void removeObject(int index) throws IndexOutOfBoundsException{
 		if(index < 0 || index >= this.objects.size())
 			throw new IndexOutOfBoundsException( "Index must in range 0-" +
@@ -80,6 +123,11 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 		fireTableDataChanged();
 	}
 
+	/**
+	 * This method remove the specific object from the model if exists.
+	 * @param obj Object to remove if exists.
+	 * @throws IllegalArgumentException if argument given is null.
+	 */
 	public void removeObject(T obj) throws IllegalArgumentException{
 		if(obj == null)
 			throw new IllegalArgumentException( "Object to remove can not be null." );
@@ -94,14 +142,21 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 //==============================================================================
 // GETTER
 //==============================================================================
+	/**
+	 * This method returns a specific object from his model index.
+	 * @param row {@link Integer} the model row of the table.
+	 * @return the object from the model.
+	 * @throws IndexOutOfBoundsException if row is < 0 or >= getObjects().size().
+	 */
 	public T getObject(int row) throws IndexOutOfBoundsException{
 		if(row < 0 || row > this.objects.size())
 			throw new IllegalArgumentException( "Row given is out of range 0-" +
-					this.objects.size() );
+					(this.objects.size()-1) );
 
 		return this.objects.get(row);
 	}
 
+	/** @return {@link Vector} the objects in the model. */
 	public Vector<T> getObjects(){
 		return this.objects;
 	}
