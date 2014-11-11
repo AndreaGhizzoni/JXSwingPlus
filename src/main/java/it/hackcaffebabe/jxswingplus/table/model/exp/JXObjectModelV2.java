@@ -8,8 +8,31 @@ import java.util.Vector;
  * This class is a simplified table model to manage heterogeneous data type.
  * This model can manage objects that implements
  * {@link it.hackcaffebabe.jxswingplus.table.model.exp.Displayable}.
- *
- * //TODO add example.
+ * The simplest way to use this model is to instance an empty model of some kind
+ * of your model class data:
+ * <pre>{@code
+ * JXObjectModel<MyDisplayableObject> model = new JXObjectModel();
+ * }</pre>
+ * At this point you can use the following method to set the column table and
+ * set witch one is editable or not:
+ * <pre>{@code
+ * String[] cn = {"foo", "bar", "eggs"};
+ * model.setColumnNames(cn);
+ * model.setColumnNotEditable(0,1);
+ * }</pre>
+ * The other two constructions functions can simplify this process:
+ * <pre>{@code
+ * String[] cn = {"foo", "bar", "eggs"};
+ * JXObjectModel<MyDisplayableObject> model = new JXObjectModel(cn, 0, 1);
+ * }</pre>
+ * The model is ready to add all the object you want by:
+ * <pre>{@code
+ * MyDisplayableObject o = new MyDisplayableObject();
+ * model.addObject(o);
+ * }</pre>
+ * Also there are a list of method to get or remove objects from the model. *
+ * Now is ready to be displayed into a
+ * {@link it.hackcaffebabe.jxswingplus.table.JXTable} as a common data model.
  *
  * @param <T>
  */
@@ -69,7 +92,7 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 	 * @param colNames {@link String} array string of column names.
 	 * @throws IllegalArgumentException if argument is null or empty array.
 	 */
-	public void setColumnNames( String[] colNames ) throws IllegalArgumentException{
+	public void setColumnNames( String... colNames ) throws IllegalArgumentException{
 		if(colNames == null || colNames.length == 0 )
 			throw new IllegalArgumentException("Column Names can not be null.");
 
@@ -89,7 +112,8 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 
 			for( Integer aColNotEditable : colNotEditable) {
 				if (aColNotEditable < 0 || aColNotEditable >= this.colNotEdit.size())
-					throw new IllegalArgumentException("Column not-editable are incorrect. It's must be in range 0-"
+					throw new IllegalArgumentException("Column not-editable are " +
+							"incorrect. It's must be in range 0-"
 							+ (this.colNotEdit.size() - 1));
 			}
 
