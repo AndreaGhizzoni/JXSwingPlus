@@ -7,7 +7,7 @@ import java.util.Vector;
 /**
  * This class is a simplified table model to manage heterogeneous data type.
  * This model can manage objects that implements
- * {@link it.hackcaffebabe.jxswingplus.table.model.exp.Displayable}.
+ * {@link JXDisplayable}.
  * The simplest way to use this model is to instance an empty model of some kind
  * of your model class data:
  * <pre>{@code
@@ -36,7 +36,7 @@ import java.util.Vector;
  *
  * @param <T>
  */
-public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
+public class JXObjectModelV2<T extends JXDisplayable> extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -230,7 +230,7 @@ public class JXObjectModelV2<T extends Displayable> extends AbstractTableModel
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int c){
 		if(this.objects.isEmpty())
-			return Displayable.class;
+			return JXDisplayable.class;
 		else
 			return getValueAt( 0, c ).getClass();
 	}

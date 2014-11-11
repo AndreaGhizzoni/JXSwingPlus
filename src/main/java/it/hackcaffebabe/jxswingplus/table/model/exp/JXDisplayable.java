@@ -5,7 +5,7 @@ package it.hackcaffebabe.jxswingplus.table.model.exp;
  * displayable in a
  * {@link it.hackcaffebabe.jxswingplus.table.model.exp.JXObjectModelV2}
  */
-public interface Displayable {
+public interface JXDisplayable {
     /**
      * Return an array of Object that represents the row to display in a table
      * of the displayable object.
