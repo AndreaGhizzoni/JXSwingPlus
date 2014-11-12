@@ -1,39 +1,38 @@
-package it.hackcaffebabe.jxswingplus.table;
+package it.hackcaffebabe.jxswingplus.table.standard;
 
+import it.hackcaffebabe.jxswingplus.table.JXTable;
 import it.hackcaffebabe.jxswingplus.table.model.JXTableModel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 /**
- * TODO there must be some bug with Adjuster
- *
  * Simple Class to test {@link it.hackcaffebabe.jxswingplus.table.JXTable} and
  * {@link it.hackcaffebabe.jxswingplus.table.model.JXTableModel}.
  *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class TestJXTableModelWithColumnAdjuster extends JFrame
+public class TestJXTableModelWithRowSorter extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private final Dimension size = new Dimension( 790, 490 );
 
 	private JPanel contentPane = new JPanel();
 	private JXTable table;
-    private JXTableColumnAdjuster adjuster;
+    private JTextField txtFilter;
 
     private Random random = new Random(System.currentTimeMillis());
 
 	/** Create the frame. */
-	public TestJXTableModelWithColumnAdjuster(){
+	public TestJXTableModelWithRowSorter(){
 		super( "Test JXTable with JXTableModel and RowSorter" );
 		this.initGUI();
+
+		this.table.setRowSorter( this.txtFilter );// sorter feature!
 	}
 
 //==============================================================================
@@ -53,15 +52,15 @@ public class TestJXTableModelWithColumnAdjuster extends JFrame
 		this.table = new JXTable( this.getModel() );
 		this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);// selection mode
 
-        this.adjuster = new JXTableColumnAdjuster(this.table);
-
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView( this.table );
 		contentPane.add( scrollPane, "cell 0 0 3 1,grow" );
 
-        JButton btnAdjust = new JButton("Adjust Columns");
-        btnAdjust.addActionListener(new AdjustActionListener());
-        contentPane.add(btnAdjust, "cell 0 1 2 1,growx");
+		contentPane.add( new JLabel( "String Filter" ), "cell 0 1,alignx right" );
+
+		this.txtFilter = new JTextField();
+		this.txtFilter.setColumns( 10 );
+		contentPane.add( this.txtFilter, "cell 1 1 2 1,growx" );
 
 		setContentPane( contentPane );
 	}
@@ -95,17 +94,6 @@ public class TestJXTableModelWithColumnAdjuster extends JFrame
     }
 
 //==============================================================================
-// INNER CLASS
-//==============================================================================
-    /* action listener from button bntAdjust */
-    class AdjustActionListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            adjuster.adjustColumns();
-        }
-    }
-
-//==============================================================================
 // MAIN
 //==============================================================================
 	/* Launch the application. */
@@ -113,7 +101,7 @@ public class TestJXTableModelWithColumnAdjuster extends JFrame
 		EventQueue.invokeLater( new Runnable(){
 			public void run(){
 				try {
-					TestJXTableModelWithColumnAdjuster frame = new TestJXTableModelWithColumnAdjuster();
+					TestJXTableModelWithRowSorter frame = new TestJXTableModelWithRowSorter();
 					frame.setVisible( true );
 				}
 				catch(Exception e) {

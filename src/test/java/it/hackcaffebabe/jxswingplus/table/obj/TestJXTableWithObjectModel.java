@@ -1,4 +1,4 @@
-package it.hackcaffebabe.jxswingplus.tableObj;
+package it.hackcaffebabe.jxswingplus.table.obj;
 
 import it.hackcaffebabe.jxswingplus.table.JXTable;
 import it.hackcaffebabe.jxswingplus.table.model.JXObjectModel;

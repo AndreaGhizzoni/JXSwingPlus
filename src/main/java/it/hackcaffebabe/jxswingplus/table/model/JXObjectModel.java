@@ -48,7 +48,7 @@ public class JXObjectModel<T extends JXDisplayable> extends AbstractTableModel
 	 * Instance the model with the column names and a list of not editable
 	 * columns as index.
 	 * @param colNames {@link String} array string of column names.
-	 * @param colNotEditable {@Integer} list of index of column not editable
+	 * @param colNotEditable {@link Integer} list of index of column not editable
 	 * @throws IllegalArgumentException if arguments given are null or empty array.
 	 */
 	public JXObjectModel(String[] colNames, Integer... colNotEditable) throws IllegalArgumentException{
