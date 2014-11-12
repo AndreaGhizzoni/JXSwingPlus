@@ -1,98 +1,162 @@
 package it.hackcaffebabe.jxswingplus.table.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import java.util.Collections;
+import java.util.Vector;
 
 /**
- * This is a simplified table model to manage heterogeneous data types.
- * All objects saved into the model must extends
- * {@link it.hackcaffebabe.jxswingplus.table.model.DisplayableObject}.
- *   
- * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
- * @version 1.0
+ * This class is a simplified table model to manage heterogeneous data type.
+ * This model can manage objects that implements
+ * {@link JXDisplayable}.
+ * The simplest way to use this model is to instance an empty model of some kind
+ * of your model class data:
+ * <pre>{@code
+ * JXObjectModel<MyDisplayableObject> model = new JXObjectModel();
+ * }</pre>
+ * At this point you can use the following method to set the column table and
+ * set witch one is editable or not:
+ * <pre>{@code
+ * String[] cn = {"foo", "bar", "eggs"};
+ * model.setColumnNames(cn);
+ * model.setColumnNotEditable(0,1);
+ * }</pre>
+ * The other two constructions functions can simplify this process:
+ * <pre>{@code
+ * String[] cn = {"foo", "bar", "eggs"};
+ * JXObjectModel<MyDisplayableObject> model = new JXObjectModel(cn, 0, 1);
+ * }</pre>
+ * The model is ready to add all the object you want by:
+ * <pre>{@code
+ * MyDisplayableObject o = new MyDisplayableObject();
+ * model.addObject(o);
+ * }</pre>
+ * Also there are a list of method to get or remove objects from the model. *
+ * Now is ready to be displayed into a
+ * {@link it.hackcaffebabe.jxswingplus.table.JXTable} as a common data model.
+ *
+ * @param <T>
  */
-public class JXObjectModel<T extends DisplayableObject> extends AbstractTableModel
+public class JXObjectModel<T extends JXDisplayable> extends AbstractTableModel
 {
 	private static final long serialVersionUID = 1L;
-	private List<T> data = new ArrayList<T>();
+
+	private Vector<String> colNames = new Vector<String>();
+	private Vector<Integer> colNotEdit = new Vector<Integer>();
+	private Vector<T> objects = new Vector<T>();
 
 	/**
-	 * Instance a model to show a set of objects of the same class T.
-	 * @param data {@link List} of object to display into a table.
-	 * @throws IllegalArgumentException if data is null or empty.
+	 * Instance the model with the column names and a list of not editable
+	 * columns as index.
+	 * @param colNames {@link String} array string of column names.
+	 * @param colNotEditable {@Integer} list of index of column not editable
+	 * @throws IllegalArgumentException if arguments given are null or empty array.
 	 */
-	public JXObjectModel(List<T> data) throws IllegalArgumentException{
-		this.addObjects( data );
+	public JXObjectModel(String[] colNames, Integer... colNotEditable) throws IllegalArgumentException{
+		this.setColumnNames(colNames);
+		this.setColumnNotEditable(colNotEditable);
 	}
 
-	/** Instance an empty model to show a set of objects of the same class T. */
-	public JXObjectModel(){
-		fireTableDataChanged();
+	/**
+	 * Instance the model with column names and leave all columns editable.
+	 * @param colNames {@link String} array string of column names.
+	 * @throws IllegalArgumentException if argument given is null or empty.
+	 */
+    public JXObjectModel(String[] colNames) throws IllegalArgumentException{
+		this(colNames, null);
 	}
+
+	/** Instance a empty model */
+	public JXObjectModel(){}
 
 //==============================================================================
 // METHOD
 //==============================================================================
 	/**
-	 * Append the object given at the end of table.
-	 * @param obj of class T object to append.
-	 * @throws IllegalArgumentException if object given is null.
+	 * This method add an object to the model.
+	 * @param obj the object to add.
+	 * @throws IllegalArgumentException if argument given is null.
 	 */
 	public void addObject(T obj) throws IllegalArgumentException{
 		if(obj == null)
 			throw new IllegalArgumentException( "Object to display can not be null." );
 
-		this.data.add( obj );
+		this.objects.add(obj);
 		fireTableDataChanged();
+	}
+
+//==============================================================================
+// SETTER
+//==============================================================================
+	/**
+	 * This method set the column names for this model.
+	 * @param colNames {@link String} array string of column names.
+	 * @throws IllegalArgumentException if argument is null or empty array.
+	 */
+	public void setColumnNames( String... colNames ) throws IllegalArgumentException{
+		if(colNames == null || colNames.length == 0 )
+			throw new IllegalArgumentException("Column Names can not be null.");
+
+		this.colNames.clear();
+		Collections.addAll(this.colNames, colNames);
 	}
 
 	/**
-	 * Add all objects from the list to model.
-	 * @param data {@link List} of objects to add.
-	 * @throws IllegalArgumentException if list of given is null or empty.
+	 * This method se the column not editable by given a list of column indexes.
+	 * @param colNotEditable {@link Integer} list of indexes.
+	 * @throws IllegalArgumentException if argument is null or empty array.
 	 */
-	public void addObjects(List<T> data) throws IllegalArgumentException{
-		if(data == null || data.isEmpty())
-			throw new IllegalArgumentException( "List of objects to display can not be null or empty." );
+	public void setColumnNotEditable( Integer... colNotEditable ) throws IllegalArgumentException{
+		if(colNotEditable != null){
+			if( colNotEditable.length == 0 )
+				throw new IllegalArgumentException("Column not-editable can not be void.");
 
-		this.data.addAll( data );
-		fireTableDataChanged();
+			for( Integer aColNotEditable : colNotEditable) {
+				if (aColNotEditable < 0 || aColNotEditable >= this.colNames.size())
+					throw new IllegalArgumentException("Column not-editable are " +
+							"incorrect. It's must be in range 0-"
+							+ (this.colNames.size() - 1));
+			}
+
+			this.colNotEdit.clear();
+			Collections.addAll(this.colNotEdit, colNotEditable);
+		}else{
+			this.colNotEdit.clear();
+		}
 	}
 
-	/** Remove all objects in the model. */
+	/** This method removes all the object in the model. */
 	public void removeAll(){
-		if(this.data.isEmpty())
+		if(this.objects.isEmpty())
 			return;
 
-		this.data.clear();
+		this.objects.clear();
 		fireTableDataChanged();
 	}
 
 	/**
-	 * Remove object at specified index.
-	 * @param index int the index of object to remove.
-	 * @throws IndexOutOfBoundsException if index is out of range 0-table rows.
+	 * This method remove the specific object from the model if exists.
+	 * @param index {@link Integer} the model index of the object.
+	 * @throws IndexOutOfBoundsException if index < 0 or >= getObjects().size()
 	 */
 	public void removeObject(int index) throws IndexOutOfBoundsException{
-		if(index < 0 || index > this.data.size())
-			throw new IndexOutOfBoundsException( "Index must in range 0-" + this.data.size() );
+		if(index < 0 || index >= this.objects.size())
+			throw new IndexOutOfBoundsException( "Index must in range 0-" +
+					this.objects.size() );
 
-		this.data.remove( index );
+		this.objects.remove( index );
 		fireTableDataChanged();
 	}
 
 	/**
-	 * Remove the object from the model. If object there is into the model will
-	 * be removed, otherwise nothing.
-	 * @param obj T the object to remove.
-	 * @throws IllegalArgumentException if argument is null is null.
+	 * This method remove the specific object from the model if exists.
+	 * @param obj Object to remove if exists.
+	 * @throws IllegalArgumentException if argument given is null.
 	 */
 	public void removeObject(T obj) throws IllegalArgumentException{
 		if(obj == null)
-			throw new IllegalArgumentException( "Object to get can not be null." );
+			throw new IllegalArgumentException( "Object to remove can not be null." );
 
-		int i = this.data.indexOf( obj );
+		int i = this.objects.indexOf(obj);
 		if(i != -1) {
 			this.removeObject(i);
 			fireTableDataChanged();
@@ -103,24 +167,22 @@ public class JXObjectModel<T extends DisplayableObject> extends AbstractTableMod
 // GETTER
 //==============================================================================
 	/**
-	 * Return the object with his index from the model.
-	 * @param row int the index of row.
-	 * @return object from the model.
-	 * @throws IndexOutOfBoundsException if index is out of range 0-model's row.
+	 * This method returns a specific object from his model index.
+	 * @param row {@link Integer} the model row of the table.
+	 * @return the object from the model.
+	 * @throws IndexOutOfBoundsException if row is < 0 or >= getObjects().size().
 	 */
 	public T getObject(int row) throws IndexOutOfBoundsException{
-		if(row < 0 || row > this.data.size())
-			throw new IllegalArgumentException( "Row given is out of range 0-" + this.data.size() );
+		if(row < 0 || row > this.objects.size())
+			throw new IllegalArgumentException( "Row given is out of range 0-" +
+					(this.objects.size()-1) );
 
-		return this.data.get( row );
+		return this.objects.get(row);
 	}
 
-	/**
-	 * Returns the list of objects in the table.
-	 * @return {@link List} of objects.
-	 */
-	public List<T> getObjects(){
-		return this.data;
+	/** @return {@link Vector} the objects in the model. */
+	public Vector<T> getObjects(){
+		return this.objects;
 	}
 
 //==============================================================================
@@ -128,53 +190,53 @@ public class JXObjectModel<T extends DisplayableObject> extends AbstractTableMod
 //==============================================================================
 	@Override
 	public int getColumnCount(){
-		if(this.data.isEmpty())
-			return 0;
-		else return this.data.get( 0 ).getColumnNames().size();
+		return this.colNames.size();
 	}
 
 	@Override
 	public int getRowCount(){
-		return data.size();
+		return objects.size();
 	}
 
 	@Override
 	public String getColumnName(int col){
-		if(this.data.size() == 0)
+		if(col < 0 || col >= this.colNames.size() )
 			return "";
-		else return this.data.get( 0 ).getColumnNames().get( col );
+		else return this.colNames.get(col);
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) throws IllegalArgumentException{
-		if( row >= this.data.size() )
-			throw new IllegalArgumentException( "Row can not be greater than row count." );
+		if( row >= this.objects.size() )
+			throw new IllegalArgumentException( "Row can not be greater than row " +
+					"count." );
 
-        Object[] dr = this.data.get( row ).getDisplayRow();
+        Object[] dr = this.objects.get( row ).getDisplayRaw();
         if(col > dr.length)
-			throw new IllegalArgumentException( "Column can not be greater than column count." );
+			throw new IllegalArgumentException( "Column can not be greater than " +
+					"column count." );
         else return dr[col];
 	}
 
 	@Override
 	public void setValueAt(Object value, int row, int col){
-		this.data.get( row ).getDisplayRow()[col] = value;
+		T r = this.objects.get(row);
+		if(col >= r.getDisplayRaw().length)
+			return;
+		r.getDisplayRaw()[col] = value;
 		fireTableCellUpdated( row, col );
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int c){
-		if(this.data.isEmpty())
-			return DisplayableObject.class;
+		if(this.objects.isEmpty())
+			return JXDisplayable.class;
 		else
 			return getValueAt( 0, c ).getClass();
 	}
 
 	@Override
 	public boolean isCellEditable(int row, int col){
-//		if(this.data.isEmpty())
-//			return true;
-//		else return !this.data.get(row).getColumnNotEditable().contains(col);
-		return !this.data.get(row).getColumnNotEditable().contains(col);
+		return !this.colNotEdit.contains(col);
 	}
 }

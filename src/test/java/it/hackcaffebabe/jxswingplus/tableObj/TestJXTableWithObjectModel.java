@@ -1,9 +1,8 @@
-package it.hackcaffebabe.jxswingplus.tableObj.exp;
+package it.hackcaffebabe.jxswingplus.tableObj;
 
 import it.hackcaffebabe.jxswingplus.table.JXTable;
 import it.hackcaffebabe.jxswingplus.table.model.JXObjectModel;
-import it.hackcaffebabe.jxswingplus.table.model.exp.JXObjectModelV2;
-import it.hackcaffebabe.jxswingplus.table.model.exp.JXDisplayable;
+import it.hackcaffebabe.jxswingplus.table.model.JXDisplayable;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +15,7 @@ import java.util.Random;
 
 /**
  * Simple Class to test {@link it.hackcaffebabe.jxswingplus.table.JXTable} and
- * {@link it.hackcaffebabe.jxswingplus.table.model.exp.JXObjectModelV2}
+ * {@link it.hackcaffebabe.jxswingplus.table.model.JXObjectModel}
  *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
@@ -27,7 +26,7 @@ public class TestJXTableWithObjectModel extends JFrame
 	private final Dimension size = new Dimension( 790, 490 );
 
 	private JPanel contentPane = new JPanel();
-	private JXObjectModelV2<MyDisplayableObject> model;
+	private JXObjectModel<MyDisplayableObject> model;
 	private JTextField txtSelectedRow;
 
 	/** Create the frame. */
@@ -80,8 +79,8 @@ public class TestJXTableWithObjectModel extends JFrame
 	}
 
 	/* build the appropriate model */
-	private JXObjectModelV2<MyDisplayableObject> computeModel(){
-		this.model = new JXObjectModelV2<>();
+	private JXObjectModel<MyDisplayableObject> computeModel(){
+		this.model = new JXObjectModel<>();
 		this.model.setColumnNames( "foo", "bar", "eggs" );
 		this.model.setColumnNotEditable( 1 );
 		return this.model;

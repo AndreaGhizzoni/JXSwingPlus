@@ -1,9 +1,9 @@
-package it.hackcaffebabe.jxswingplus.table.model.exp;
+package it.hackcaffebabe.jxswingplus.table.model;
 
 /**
  * Simple interface to implements if you want that your object will be
  * displayable in a
- * {@link it.hackcaffebabe.jxswingplus.table.model.exp.JXObjectModelV2}
+ * {@link JXObjectModel}
  */
 public interface JXDisplayable {
     /**
