@@ -111,10 +111,10 @@ public class JXObjectModelV2<T extends JXDisplayable> extends AbstractTableModel
 				throw new IllegalArgumentException("Column not-editable can not be void.");
 
 			for( Integer aColNotEditable : colNotEditable) {
-				if (aColNotEditable < 0 || aColNotEditable >= this.colNotEdit.size())
+				if (aColNotEditable < 0 || aColNotEditable >= this.colNames.size())
 					throw new IllegalArgumentException("Column not-editable are " +
 							"incorrect. It's must be in range 0-"
-							+ (this.colNotEdit.size() - 1));
+							+ (this.colNames.size() - 1));
 			}
 
 			this.colNotEdit.clear();
