@@ -1,4 +1,5 @@
 bin/
+out/
 build/classes
 build/tmp
 build/dependency-cache
