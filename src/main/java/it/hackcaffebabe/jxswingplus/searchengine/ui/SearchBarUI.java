@@ -201,7 +201,8 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 			@Override
 			public Component getListCellRendererComponent(JList< ? > list,
                     Object value, int index, boolean isSelected, boolean cellHasFocus){
-				JLabel l = (JLabel) super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+				JLabel l = (JLabel) super.getListCellRendererComponent( list,
+						value, index, isSelected, cellHasFocus );
 				if(value instanceof JXSearchEngine) {
 					JXSearchEngine se = (JXSearchEngine) value;
 					l.setIcon( se.getFavIcon() );
@@ -245,16 +246,18 @@ class SearchBarUI extends javax.swing.plaf.basic.BasicComboBoxUI
 				JButton arrowButton = (JButton) cb.getComponent( 0 );
 				if(arrowButton != null) {
 					Insets arrowInsets = arrowButton.getInsets();
-					buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-					arrowButton.setBounds( insets.left, insets.top, buttonWidth, buttonHeight );
+					int alr = arrowInsets.left + arrowInsets.right;
+					buttonWidth = arrowButton.getPreferredSize().width + alr ;
+					arrowButton.setBounds( insets.left, insets.top, buttonWidth,
+							buttonHeight );
 				}
 
                 //set layout of search button
 				for(Component c: cb.getComponents()) {
 					if("ComboBox.loupeButton".equals( c.getName() )) {
 						loupeButton = (JButton) c;
-                        loupeButton.setBounds(width - insets.right - buttonHeight, insets.top,
-                            buttonHeight, buttonHeight);
+                        loupeButton.setBounds(width - insets.right - buttonHeight,
+								insets.top, buttonHeight, buttonHeight);
 						break;
 					}
 				}

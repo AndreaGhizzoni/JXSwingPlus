@@ -28,7 +28,8 @@ class TriangleArrowButton extends JButton
 	@Override
 	protected void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON );
 
         ButtonModel bm = getModel();
         boolean isArmedAndRollover = bm.isArmed() && bm.isRollover() ;
@@ -42,7 +43,8 @@ class TriangleArrowButton extends JButton
 		Rectangle r = getBounds();
 		r.grow( 1, 1 );
 		g2.fill( r );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_OFF );
 		g2.setColor( getBackground() );
 		super.paintComponent( g );
 

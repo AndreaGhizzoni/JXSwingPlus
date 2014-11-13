@@ -1,9 +1,6 @@
 package it.hackcaffebabe.jxswingplus.statusbar;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -32,14 +29,21 @@ public class TestJXStatusBar extends JFrame
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		setSize( this.size );
 		setMinimumSize( this.size );
-		setLocation( (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - this.size.width / 2), 
-				     (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2 - this.size.height / 2) );
+		setLocation(center(this.size.width, this.size.height));
 
         JXStatusBar statusBar = new JXStatusBar(this);
 		statusBar.setTitle("title");
 		statusBar.setStatus("status");
 		statusBar.setTextFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
 		add(statusBar, BorderLayout.SOUTH );
+	}
+
+	/* return the point when the frame need to be painted to make in the center
+	 * of the screen */
+	private Point center( int w, int h ){
+		int wt = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2;
+		int ht = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2;
+		return new Point( wt - (w/ 2), ht - (h/2) );
 	}
 	
 //==============================================================================

@@ -1,7 +1,7 @@
 package it.hackcaffebabe.jxswingplus.searchengine.ui;
 
 import it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine;
-
+import it.hackcaffebabe.jxswingplus.searchengine.model.JXDefaultSearchEngine;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ComboBoxModel;

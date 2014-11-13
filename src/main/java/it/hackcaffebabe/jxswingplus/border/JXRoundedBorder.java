@@ -24,9 +24,11 @@ public class JXRoundedBorder extends AbstractBorder
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){
+	public void paintBorder(Component c, Graphics g, int x, int y, int width,
+							int height){
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON );
 		int r = height - 1;
 		RoundRectangle2D round = new RoundRectangle2D.Float( x, y, width - 1, r, r, r );
 		Container parent = c.getParent();

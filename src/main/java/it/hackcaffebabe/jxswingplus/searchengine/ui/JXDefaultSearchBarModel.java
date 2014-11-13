@@ -21,7 +21,8 @@ import javax.swing.MutableComboBoxModel;
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class JXDefaultSearchBarModel extends AbstractListModel<JXSearchEngine> implements MutableComboBoxModel<JXSearchEngine>
+public class JXDefaultSearchBarModel extends AbstractListModel<JXSearchEngine>
+		implements MutableComboBoxModel<JXSearchEngine>
 {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<JXSearchEngine> list = new ArrayList<JXSearchEngine>();

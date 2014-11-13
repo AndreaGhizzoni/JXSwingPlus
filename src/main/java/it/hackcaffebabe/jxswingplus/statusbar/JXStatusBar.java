@@ -59,7 +59,8 @@ public class JXStatusBar extends JPanel
      *                              be set to 16
 	 * @throws NullPointerException if content is null.
 	 */
-	public JXStatusBar(JFrame content, String status, String title, int height) throws NullPointerException{
+	public JXStatusBar(JFrame content, String status, String title, int height)
+			throws NullPointerException{
 		super();
 		this.setContent( content );
 		setBorder( new BevelBorder( BevelBorder.RAISED ) );

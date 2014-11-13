@@ -31,7 +31,8 @@ public class TestJXRoundedBorder extends JFrame
 		textRounded.setBorder(new JXRoundedBorder());
 		textRounded.setText("HI! im a rounded JTextField");
 
-		content.add(makeTitlePanel(textRounded, "setBorder(new RoundedCornerBorder())"));
+		content.add(makeTitlePanel(textRounded,
+				"setBorder(new RoundedCornerBorder())"));
 
 		getContentPane().add(content);
 	}

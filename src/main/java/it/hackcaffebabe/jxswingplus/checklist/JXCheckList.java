@@ -130,7 +130,8 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 				repaint();
                 //run the action listener form the entry
 				if(entry.getCheckbox().getActionListeners().length != 0) {
-					ActionEvent evt = new ActionEvent( entry.getCheckbox(), 0, entry.getCheckbox().getActionCommand() );
+					String ac = entry.getCheckbox().getActionCommand();
+					ActionEvent evt = new ActionEvent( entry.getCheckbox(), 0, ac );
 					entry.getCheckbox().getActionListeners()[0].actionPerformed( evt );
 				}
 			}
@@ -147,7 +148,8 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
 	 * This icon indicates if the elements is checked or not.
 	 * @return {@link DefaultListModel} of T type.
 	 */
-	public static <T> DefaultListModel<JXCheckListEntry<T>> convertToModel(List<T> objects, boolean showRightIcon){
+	public static <T> DefaultListModel<JXCheckListEntry<T>> convertToModel(
+			List<T> objects, boolean showRightIcon){
 		DefaultListModel<JXCheckListEntry<T>> model = new DefaultListModel<JXCheckListEntry<T>>();
 		if(objects != null) {
 			for(T t: objects) {

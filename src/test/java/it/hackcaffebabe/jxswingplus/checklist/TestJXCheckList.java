@@ -35,7 +35,8 @@ public class TestJXCheckList extends JFrame
 
 		//=== SECOND WAY
 //		List<Integer> lst = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 );
-//		DefaultListModel<JXCheckListEntry<Integer>> model = JXCheckList.convertToModel( lst, true );
+//		DefaultListModel<JXCheckListEntry<Integer>> model =
+// 										JXCheckList.convertToModel( lst, true );
 //		lstCheck.setModel( model );
 
 //		//=== FIRST WAY
@@ -59,9 +60,9 @@ public class TestJXCheckList extends JFrame
 		getContentPane().add( scrollPane, "cell 0 0 2 1,grow" );
 	}
 
-//===========================================================================================
+//==============================================================================
 // MAIN
-//===========================================================================================
+//==============================================================================
 	public static void main(String[] args){
 		EventQueue.invokeLater( new Runnable(){
 			public void run(){
