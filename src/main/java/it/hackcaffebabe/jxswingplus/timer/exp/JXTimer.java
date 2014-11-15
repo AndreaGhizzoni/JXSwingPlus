@@ -1,13 +1,19 @@
-package it.hackcaffebabe.jxswingplus.timer;
+package it.hackcaffebabe.jxswingplus.timer.exp;
 
-import static it.hackcaffebabe.jxswingplus.timer.JXTimerUtils.*;
+import it.hackcaffebabe.jxswingplus.timer.JXTimerState;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import javax.swing.JLabel;
-import javax.swing.Timer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import static it.hackcaffebabe.jxswingplus.timer.JXTimerUtils.*;
 
 /**
+ * //TODO check ALL javadoc
+ *
  * Simple timer that displays the time in a {@link javax.swing.JLabel}. To use
  * this kind of timer you need to initialize that with a time to start in
  * milliseconds.
@@ -17,9 +23,9 @@ import javax.swing.Timer;
  * Now let sets the {@link javax.swing.JLabel} ( or list ) that displays the time.
  * <pre>{@code
  * myTimer.setClocks( Arrays.asList( label1, label2 ) );
- * myTimer.addLabel( myBeautifulLabel );
+ * myTimer.addClock( myBeautifulLabel );
  * }</pre>
- * Optionally you can set an {@link java.lang.Runnable} event to run when the
+ * Optionally you can set an {@link Runnable} event to run when the
  * time is up:
  * <pre>{@code
  * myTimer.setActionWhenTimeIsUp( myFantasticEvent );
@@ -31,107 +37,35 @@ import javax.swing.Timer;
  * myTimer.stop()  // to stop and reset the count down.
  * }</pre>
  * While you using this method you probably need to know witch state the
- * {@link it.hackcaffebabe.jxswingplus.timer.JXTimer} is. To control this you
+ * {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimer} is. To control this you
  * can use this method that returns a
  * {@link it.hackcaffebabe.jxswingplus.timer.JXTimerState}:
  * <pre>{@code
  * myTimer.getState()
  * }</pre>
- * 
+ *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class JXTimer
+public final class JXTimer
 {
-	protected Timer timer;
-	private static final int TIMER_PERIOD = 1000;
+	private Timer timer;
+	private TimerActionListener timerActionListener = new TimerActionListener();
+	private static final int TIMER_PERIOD = 1000;// 1000 milliseconds
 
 	private JXTimerState state = JXTimerState.STOPPED;
-	private long currentTime = 0L;
-	private Runnable timeUpEvent;
-	private List<JLabel> components = new ArrayList<>();
+	private List<JXTimerComponent> components = new ArrayList<>();
 
-	/**
-	 * Instance an empty timer. Use:
-	 * <pre>{@code
-	 * setTimeToStart( 1000 );
-	 * addLabel( label );
-	 * setActionWhenTimeIsUp( myEvent );
-	 * }</pre>
-	 * Finally use the control method to start, stop and pause the timer.
-	 */
-	public JXTimer(){}
 
-	/**
-	 * Instance a timer with start time given. Use:
-	 * <pre>{@code
-	 * addLabel( label );
-	 * setActionWhenTimeIsUp( myEvent );
-     * }</pre>
-	 * @param startingTime {@link Long} time in milliseconds.
-	 * @throws IllegalArgumentException if some arguments are null.
-	 */
-	public JXTimer(long startingTime) throws IllegalArgumentException{
-		this.setStartingTime( startingTime );
+	public JXTimer( long millisecondToStart, Runnable eventTimeUp ){
+		this.setStartingTime(millisecondToStart);
+		this.setActionWhenTimeIsUp(eventTimeUp);
 	}
 
-	/**
-	 * Instance a Timer that display the countdown on a list of
-	 * {@link javax.swing.JLabel}.
-	 * <pre>{@code
-	 * setActionWhenTimeIsUp( myEvent );
-	 * }</pre>
-	 * @param startingTime {@link Long} time in milliseconds.
-	 * @param labels {@link List} as list to display the countdown.
-	 * @throws IllegalArgumentException if some arguments are null.
-	 */
-	public JXTimer(long startingTime, List<JLabel> labels ) throws IllegalArgumentException{
-		this.setStartingTime( startingTime );
-		this.setLabels( labels );
-		this.displayFormattedTime(getFormattedTime(this.currentTime));
-	}
-
-    /**
-	 * Instance a Timer that display the countdown on a list of
-	 * {@link javax.swing.JLabel}.
-	 * <pre>{@code
-	 * setActionWhenTimeIsUp( myEvent );
-	 * }</pre>
-	 * @param startingTime {@link Long} time in milliseconds.
-	 * @param labels list of {link JLabel} to display the countdown.
-	 * @throws IllegalArgumentException if some arguments are null.
-	 */
-	public JXTimer(long startingTime, JLabel... labels ) throws IllegalArgumentException{
-		this.setStartingTime( startingTime );
-		this.setLabels(Arrays.asList(labels));
-		this.displayFormattedTime(getFormattedTime(this.currentTime));
-	}
-
-	/**
-	 * Display the countdown on a Swing Component with a specific event on
-	 * time's up.
-	 * @param timeToStart {@link Long} to start in milliseconds.
-	 * @param components {@link List}as list to display the countdown.
-	 * @param event {@link Runnable} event to execute when time is up.
-	 * @throws IllegalArgumentException if some arguments are null.
-	 */
-	public JXTimer(long timeToStart, List<JLabel> components, Runnable event)
-			throws IllegalArgumentException{
-		this.setStartingTime( timeToStart );
-		this.setLabels( components );
-		this.displayFormattedTime(getFormattedTime(this.currentTime));
-		this.setActionWhenTimeIsUp( event );
-	}
 
 //==============================================================================
 // METHOD
 //==============================================================================
-	/* This method display the formatted time on the components of the list */
-	private void displayFormattedTime(String formattedTime){
-		for(JLabel l: this.components)
-            l.setText( formattedTime );
-	}
-
 	/**
 	 * This method starts the countdown
 	 * @throws IllegalStateException {@link Exception} if timer is still running
@@ -141,7 +75,8 @@ public class JXTimer
 			throw new IllegalStateException( "You can not start the timer " +
 					"because is still running." );
 
-		this.timer = new Timer( JXTimer.TIMER_PERIOD, new TimerActionListener() );
+		//TODO find a way to reuse the current time or reset it
+		this.timer = new Timer( JXTimer.TIMER_PERIOD, this.timerActionListener );
 		this.timer.setRepeats( true );
 		this.timer.start();
 
@@ -150,24 +85,23 @@ public class JXTimer
 
 	/**
 	 * This method stop and restart the countdown
-	 * @throws IllegalStateException if timer is not running 
+	 * @throws IllegalStateException if timer is not running
 	 */
 	public void stop() throws IllegalStateException{
 		if(this.state != JXTimerState.RUNNING)
-			throw new IllegalStateException( "You can not stop " +
-					"the timer because is not running." );
+			throw new IllegalStateException( "You can not stop the timer because " +
+					"is not running." );
 
 		this.timer.stop();
 		this.timer = null;// necessary because timer.stop() means pause the timer.
-		this.currentTime = 0L;
-		this.displayFormattedTime( "00:00:00" );
+		this.timerActionListener.setCurrentTime(0L);
 
 		this.state = JXTimerState.STOPPED;
 	}
 
 	/**
 	 * This method pause the countdown
-	 * @throws IllegalStateException if timer is not running 
+	 * @throws IllegalStateException if timer is not running
 	 */
 	public void pause() throws IllegalStateException{
 		if(this.state != JXTimerState.RUNNING)
@@ -182,40 +116,41 @@ public class JXTimer
 // SETTER
 //==============================================================================
 	/**
-	 * This method adds a {@link JLabel} to display the countdown.
-	 * @param label {@link JLabel} that will be added.
-	 * @throws IllegalArgumentException if label given is null.
+	 * This method adds a {@link JXTimerComponent} to display the countdown.
+	 * @param tComp {@link JXTimerComponent} that will be added.
+	 * @throws IllegalArgumentException if timer component given is null.
 	 * @throws IllegalStateException if times is still running.
 	 */
-	public void addLabel(JLabel label) throws IllegalArgumentException, IllegalStateException{
+	public void addClock(JXTimerComponent tComp) throws IllegalArgumentException,
+			IllegalStateException{
 		if(this.state != JXTimerState.STOPPED)
-			throw new IllegalStateException(
-					"You can not add label to display the countdown while the " +
-							"timer is still running." );
-		if(label == null)
-			throw new IllegalArgumentException( "Label can not be null." );
+			throw new IllegalStateException("You can not add timer component to " +
+					"display the countdown while the timer is still running." );
+		if(tComp == null)
+			throw new IllegalArgumentException( "Timer component can not be null." );
 
-		this.components.add( label );
+		tComp.setTime(this.timerActionListener.currentTime);
+		this.components.add( tComp );
 	}
 
 	/**
 	 * This method set the component/s to display the countdown
-	 * @param labels {@link List} as list {@link JLabel}.
+	 * @param tComp {@link List} as list {@link javax.swing.JLabel}.
 	 * @throws IllegalArgumentException if argument given is null or list size = 0.
 	 * @throws IllegalStateException if times is still running.
 	 */
-	public void setLabels(List<JLabel> labels) throws IllegalArgumentException,
+	public void setClocks(List<JXTimerComponent> tComp) throws IllegalArgumentException,
 			IllegalStateException{
 		if(this.state != JXTimerState.STOPPED)
-			throw new IllegalStateException( "You can not add label to display " +
+			throw new IllegalStateException( "You can not add timer component to display " +
 					"the countdown while the timer is still running." );
 
-		if(labels == null || labels.size() == 0)
-			throw new IllegalArgumentException( "List of Labels can not be null " +
-					"or empty list." );
+		if(tComp == null || tComp.size() == 0)
+			throw new IllegalArgumentException( "List of timer components can not " +
+					"be null or empty list." );
 
-		for(JLabel l : labels)
-			this.addLabel(l);
+		for(JXTimerComponent l : tComp)
+			this.addClock(l);
 	}
 
 	/**
@@ -233,35 +168,25 @@ public class JXTimer
 		if(time < 0)
 			throw new IllegalArgumentException( "Time can not be less of zero." );
 
-		this.currentTime = time;
-		this.displayFormattedTime( JXTimerUtils.getFormattedTime( this.currentTime ) );
+		this.timerActionListener.setCurrentTime(time);
 	}
 
 	/**
 	 * This method set the action to execute when timer is up.<br>
 	 * Set this to null to cancel the event.
-	 * @param event {@link Runnable} to run when time is up. 
+	 * @param event {@link Runnable} to run when time is up.
 	 */
 	public void setActionWhenTimeIsUp(Runnable event){
-		this.timeUpEvent = event;
+		this.timerActionListener.timeUpEvent = event;
 	}
 
 //==============================================================================
 // GETTER
 //==============================================================================
-	/**
-	 * Returns the list of JLabel witch displays the JXTimer.
-	 * @return {@link List} of JLabel. If there is no labels the list will be void.
-	 */
-	public List<JLabel> getLabels(){
+	public List<JXTimerComponent> getClocks(){
 		return this.components;
 	}
 
-	/**
-	 * This method returns the state of timer.<br>
-	 * @see JXTimerState for more information.<br>
-	 * @return {@link JXTimerState} the state of timer.
-	 */
 	public JXTimerState getState(){
 		return this.state;
 	}
@@ -272,6 +197,15 @@ public class JXTimer
 	/* class that describe the action of timer each second. */
 	private class TimerActionListener implements ActionListener
 	{
+		private long currentTime = 0L;
+		private Runnable timeUpEvent;
+
+		void setCurrentTime(long currentTime){
+			this.currentTime = currentTime;
+			for( JXTimerComponent i : components )
+				i.setTime(this.currentTime);
+		}
+
 		@Override
 		public void actionPerformed(ActionEvent e){
 			//if countdown returns true, it's means that time is up
@@ -285,12 +219,13 @@ public class JXTimer
 
 				state = JXTimerState.STOPPED;
 			} else {
-				displayFormattedTime(getFormattedTime(currentTime));
+				for(JXTimerComponent i: components)
+					i.setTime(currentTime);
 			}
 		}
 
 		/* this method create the countdown, necessary to the timer. */
-		private boolean countdown(){
+		boolean countdown(){
 			String formatted = getFormattedTime( currentTime );
 
 			StringTokenizer token = new StringTokenizer( formatted, ":" );

@@ -1,8 +1,8 @@
-package it.hackcaffebabe.jxswingplus.timer;
+package it.hackcaffebabe.jxswingplus.timer.exp;
 
 /**
  * This class provide the common operation on time usefully for
- * {@link it.hackcaffebabe.jxswingplus.timer.JXTimer}
+ * {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimer}
  *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
@@ -16,7 +16,7 @@ public class JXTimerUtils
 	 * @throws IllegalArgumentException if millisecond is less than zero.
 	 */
 	public static String getFormattedTime(long millisecond) throws IllegalArgumentException{
-		Long s = JXTimerUtils.getSecondsFromMillisecond( millisecond );
+		Long s = JXTimerUtils.getSecondsFromMillisecond(millisecond);
 		Long seconds = s % 60;
 		Long m = s / 60;
 		Long minutes = m % 60;
@@ -51,7 +51,7 @@ public class JXTimerUtils
 		if(milliseconds < 0)
 			throw new IllegalArgumentException( "Milliseconds given can not be less of zero." );
 
-		return JXTimerUtils.getSecondsFromMillisecond( milliseconds ) / 60;
+		return JXTimerUtils.getSecondsFromMillisecond(milliseconds) / 60;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class JXTimerUtils
 		if(milliseconds < 0)
 			throw new IllegalArgumentException( "Milliseconds given can not be less of zero." );
 
-		return JXTimerUtils.getSecondsFromMillisecond( milliseconds ) / 60 * 60;
+		return JXTimerUtils.getSecondsFromMillisecond(milliseconds) / 60 * 60;
 	}
 
 	/**
