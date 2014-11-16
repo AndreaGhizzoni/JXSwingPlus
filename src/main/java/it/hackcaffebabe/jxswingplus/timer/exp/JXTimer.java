@@ -56,6 +56,7 @@ public final class JXTimer
 	private JXTimerState state = JXTimerState.STOPPED;
 	private List<JXTimerComponent> components = new ArrayList<>();
 
+	public JXTimer(){}
 
 	public JXTimer( long millisecondToStart, Runnable eventTimeUp ){
 		this.setStartingTime(millisecondToStart);
@@ -202,6 +203,10 @@ public final class JXTimer
 
 		void setCurrentTime(long currentTime){
 			this.currentTime = currentTime;
+			this.update();
+		}
+
+		void update(){
 			for( JXTimerComponent i : components )
 				i.setTime(this.currentTime);
 		}
@@ -219,43 +224,44 @@ public final class JXTimer
 
 				state = JXTimerState.STOPPED;
 			} else {
-				for(JXTimerComponent i: components)
-					i.setTime(currentTime);
+				this.update();
 			}
 		}
 
 		/* this method create the countdown, necessary to the timer. */
 		boolean countdown(){
-			String formatted = getFormattedTime( currentTime );
+			this.currentTime -= TIMER_PERIOD;
 
-			StringTokenizer token = new StringTokenizer( formatted, ":" );
-			Integer h = Integer.parseInt( token.nextToken() );//TODO this is a slow operation. use JLabel to hold this info
-			Integer m = Integer.parseInt( token.nextToken() );
-			Integer s = Integer.parseInt( token.nextToken() );
+			// c = 0 if currentTime == 0, c < 0 if currentTime < 0
+			int c = Long.compare(this.currentTime, 0L);
+			return ( c == 0 || c < 0 );
 
-			if(s != 0) {
-				s--;
-			} else {
-				if(m != 0) {
-					m--;
-					s = 59;
-				} else {
-					if(h != 0) {
-						h--;
-						m = 59;
-						s = 59;
-					} else {
-						return true;
-					}
-				}
-			}
-
-			Long seconds = getMillisecondFromSeconds( s );
-			Long minutes = getMillisecondFromMinutes( m );
-			Long hours = getMillisecondFromHours( h );
-
-			currentTime = seconds + minutes + hours;
-			return false;
+//			String formatted = getFormattedTime( currentTime );
+//			StringTokenizer token = new StringTokenizer( formatted, ":" );
+//			Integer h = Integer.parseInt( token.nextToken() );
+//			Integer m = Integer.parseInt( token.nextToken() );
+//			Integer s = Integer.parseInt( token.nextToken() );
+//			if(s != 0) {
+//				s--;
+//			} else {
+//				if(m != 0) {
+//					m--;
+//					s = 59;
+//				} else {
+//					if(h != 0) {
+//						h--;
+//						m = 59;
+//						s = 59;
+//					} else {
+//						return true;
+//					}
+//				}
+//			}
+//			Long seconds = getMillisecondFromSeconds( s );
+//			Long minutes = getMillisecondFromMinutes( m );
+//			Long hours = getMillisecondFromHours( h );
+//			currentTime = seconds + minutes + hours;
+//			return false;
 		}
 	}
 }
