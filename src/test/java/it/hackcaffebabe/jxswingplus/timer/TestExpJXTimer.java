@@ -13,9 +13,7 @@ import it.hackcaffebabe.jxswingplus.timer.exp.JXTimer;
 
 
 /**
- * Simple class to test {@link it.hackcaffebabe.jxswingplus.timer.JXTimer},
- * {@link it.hackcaffebabe.jxswingplus.timer.JXTimerState} and
- * {@link it.hackcaffebabe.jxswingplus.timer.JXTimerUtils}
+ * Simple class to test //TODO add link to class
  *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
@@ -35,9 +33,7 @@ public class TestExpJXTimer extends JFrame
 	private final JButton btnPause = new JButton( "Pause" );
 	private final JButton btnStop = new JButton( "Stop" );
 
-	/**
-	 * Create the frame.
-	 */
+	/** Create the frame. */
 	public TestExpJXTimer(){
 		super( "Test M2_JXTimer" );
 		this.initGUI();
@@ -46,27 +42,26 @@ public class TestExpJXTimer extends JFrame
 		timer.setActionWhenTimeIsUp( new MyTimeUpEvent() );
 	}
 
-//====================================================================================================//
+//==============================================================================
 // METHOD
-//====================================================================================================//
-	/**
-	 * Initialize all components
-	 */
+//==============================================================================
+	/* Initialize all components */
 	private void initGUI(){
 		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		setSize( this.size );
 		setMinimumSize( this.size );
-		setLocation( (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - this.size.width / 2), (int) (Toolkit.getDefaultToolkit()
-				.getScreenSize().getHeight() / 2 - this.size.height / 2) );
+		setLocation(center(this.size.width, this.size.height));
 
 		contentPane.setLayout( new MigLayout( "", "[grow]", "[354.00,grow][61.00]" ) );
 
-		this.pnlTimer.setBorder( new TitledBorder( null, "Timers", TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
+		this.pnlTimer.setBorder( new TitledBorder( null, "Timers",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
 		this.pnlTimer.setLayout( new GridLayout( 10, 5, 10, 10 ) );
 		contentPane.add( pnlTimer, "cell 0 0,grow" );
 
 		JPanel pnlOption = new JPanel();
-		pnlOption.setBorder( new TitledBorder( null, "Options", TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
+		pnlOption.setBorder( new TitledBorder( null, "Options",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null ) );
 		pnlOption.setLayout( new MigLayout( "", "[128.00][253.00][][grow]", "[]" ) );
 
 		this.btnAddTimer.addActionListener( new AddTimerActionListener() );
@@ -97,9 +92,17 @@ public class TestExpJXTimer extends JFrame
 		setContentPane( contentPane );
 	}
 
-//====================================================================================================//
+    /* return the point when the frame need to be painted to make in the center
+	 * of the screen */
+	private Point center( int w, int h ){
+		int wt = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2;
+		int ht = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2;
+		return new Point( wt - (w/ 2), ht - (h/2) );
+	}
+
+//==============================================================================
 // INNER CLASS
-//====================================================================================================//
+//==============================================================================
 	/* Event handle of button AddTimer. */
 	private class AddTimerActionListener implements ActionListener
 	{
@@ -122,7 +125,8 @@ public class TestExpJXTimer extends JFrame
 	{
 		@Override
 		public void run(){
-			JOptionPane.showMessageDialog( pnlTimer, "Time is up!", "Time up!", JOptionPane.INFORMATION_MESSAGE );
+			JOptionPane.showMessageDialog( pnlTimer, "Time is up!", "Time up!",
+					JOptionPane.INFORMATION_MESSAGE );
 
 			btnStart.setEnabled( false );
 			btnPause.setEnabled( false );
@@ -151,9 +155,9 @@ public class TestExpJXTimer extends JFrame
 
 			}
 			catch(NumberFormatException ex) {
-				JOptionPane.showMessageDialog( pnlTimer, i + " is not a valid number. Pleas insert a millisecond as a number.", "Error",
-						JOptionPane.ERROR_MESSAGE );
-				return;
+				JOptionPane.showMessageDialog( pnlTimer, i + " is not a valid " +
+								"number. Pleas insert a millisecond as a number.",
+                                "Error",JOptionPane.ERROR_MESSAGE );
 			}
 		}
 	}
@@ -203,9 +207,9 @@ public class TestExpJXTimer extends JFrame
 		}
 	}
 
-//====================================================================================================//
+//==============================================================================
 // MAIN
-//====================================================================================================//	
+//==============================================================================
 	/* Launch the application. */
 	public static void main(String[] args){
 		EventQueue.invokeLater( new Runnable(){
