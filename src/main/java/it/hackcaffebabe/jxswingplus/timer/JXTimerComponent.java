@@ -1,11 +1,10 @@
-package it.hackcaffebabe.jxswingplus.timer.exp;
+package it.hackcaffebabe.jxswingplus.timer;
 
 import javax.swing.*;
-import static it.hackcaffebabe.jxswingplus.timer.exp.JXTimerUtils.*;
 
 /**
  * This is a swing component to display the timer from
- * {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimer}. This is used as a
+ * {@link JXTimer}. This is used as a
  * simple JLabel, but, instead to use <code>setText("sometext")</code> there is
  * a package method to display the time on this component.
  */
@@ -26,7 +25,7 @@ public class JXTimerComponent extends JLabel
 
     /* package method used in JXTimer */
     void setTime(long milliseconds){
-        this.formattedTime = getFormattedTime(milliseconds);
+        this.formattedTime = JXTimerUtils.getFormattedTime(milliseconds);
         super.setText( this.formattedTime );
     }
 

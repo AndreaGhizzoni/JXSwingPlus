@@ -16,16 +16,17 @@ public class JXTimerUtils
 	 * @throws IllegalArgumentException if millisecond is less than zero.
 	 */
 	public static String getFormattedTime(long millisecond) throws IllegalArgumentException{
-		Long s = JXTimerUtils.getSecondsFromMillisecond( millisecond );
-		Long seconds = s % 60;
+		Long s = JXTimerUtils.getSecondsFromMillisecond(millisecond);
 		Long m = s / 60;
+		Long seconds = s % 60;
 		Long minutes = m % 60;
 		Long hours = m / 60;
 
-		return String.format( "%2s%s%2s%s%2s", 
-				(hours.toString().length() == 1 ? "0" + hours.toString() : hours.toString()), ":", 
-				(minutes.toString().length() == 1 ? "0" + minutes.toString() : minutes.toString()), ":", 
-				(seconds.toString().length() == 1 ? "0" + seconds.toString() : seconds.toString()) );
+		String sh = hours.toString();
+		String sm = minutes.toString();
+		String ss = seconds.toString();
+		return String.format( "%2s%s%2s%s%2s", (sh.length() == 1 ? "0"+sh : sh), ":",
+				(sm.length() == 1 ? "0"+sm : sm), ":", (ss.length() == 1 ? "0"+ss : ss) );
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class JXTimerUtils
 		if(milliseconds < 0)
 			throw new IllegalArgumentException( "Milliseconds given can not be less of zero." );
 
-		return JXTimerUtils.getSecondsFromMillisecond( milliseconds ) / 60;
+		return JXTimerUtils.getSecondsFromMillisecond(milliseconds) / 60;
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class JXTimerUtils
 		if(milliseconds < 0)
 			throw new IllegalArgumentException( "Milliseconds given can not be less of zero." );
 
-		return JXTimerUtils.getSecondsFromMillisecond( milliseconds ) / 60 * 60;
+		return JXTimerUtils.getSecondsFromMillisecond(milliseconds) / 60 * 60;
 	}
 
 	/**
