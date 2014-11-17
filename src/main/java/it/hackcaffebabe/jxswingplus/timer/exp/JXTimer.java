@@ -8,29 +8,26 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
-
-import static it.hackcaffebabe.jxswingplus.timer.JXTimerUtils.*;
 
 /**
- * //TODO check ALL javadoc
- *
- * Simple timer that displays the time in a {@link javax.swing.JLabel}. To use
- * this kind of timer you need to initialize that with a time to start in
- * milliseconds.
+ * Simple timer that displays the time in one or more
+ * {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimerComponent}. To use this
+ * kind of timer you need to initialize that with a time to start in milliseconds:
  * <pre>{@code
  * JXTimer myTimer = new JXTimer( 1000 * n );
  * }</pre>
- * Now let sets the {@link javax.swing.JLabel} ( or list ) that displays the time.
+ * Now let sets the {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimerComponent}
+ * that displays the time.
  * <pre>{@code
- * myTimer.setClocks( Arrays.asList( label1, label2 ) );
- * myTimer.addClock( myBeautifulLabel );
+ * myTimer.setClocks( Arrays.asList( cmp1, cmp2 ) );
+ * myTimer.addClock( cmp1 );
  * }</pre>
- * Optionally you can set an {@link Runnable} event to run when the
+ * Optionally you can set an {@link java.lang.Runnable} event to run when the
  * time is up:
  * <pre>{@code
  * myTimer.setActionWhenTimeIsUp( myFantasticEvent );
  * }</pre>
+ * Note that there is a constructor method to specify all the previous parameter.
  * Now you can use the control method to start, stop and pause the timer:
  * <pre>{@code
  * myTimer.start() // to start the count down.
@@ -57,20 +54,40 @@ public final class JXTimer
 	private JXTimerState state = JXTimerState.STOPPED;
 	private List<JXTimerComponent> components = new ArrayList<>();
 
+	/**
+	 * Instance a JXTimer with time to start, time up event and list of
+	 * JXTimerComponents to display the timer.
+	 * @param msToStart long time to start in milliseconds.
+	 * @param eventTimeUp {@link Runnable} the event when time is up.
+	 * @param comp array of {@link JXTimerComponent}.
+	 */
     public JXTimer( long msToStart, Runnable eventTimeUp, JXTimerComponent... comp ){
 		this.setStartingTime(msToStart);
 		this.setActionWhenTimeIsUp(eventTimeUp);
 		this.setClocks(Arrays.asList(comp));
 	}
 
+	/**
+	 * Instance a JXTimer with time to start.
+	 * @param msToStart long the time to start in milliseconds.
+	 */
 	public JXTimer( long msToStart ){
 		this(msToStart, null, new JXTimerComponent[]{});
 	}
 
+	/**
+	 * Instance a JXTimer with time to start and the time up event.
+	 * @param msToStart long the time to start in milliseconds.
+	 * @param eventTimeUp {@link Runnable} the event when time is up.
+	 */
 	public JXTimer( long msToStart, Runnable eventTimeUp ){
 		this(msToStart,eventTimeUp, new JXTimerComponent[]{});
 	}
 
+	/**
+	 * Instance an empty JXTimer. To start this timer needs to be set the
+	 * starting time.
+	 */
 	public JXTimer(){}
 
 //==============================================================================
@@ -85,7 +102,6 @@ public final class JXTimer
 			throw new IllegalStateException( "You can not start the timer " +
 					"because is still running." );
 
-		//TODO find a way to reuse the current time or reset it
 		this.timer = new Timer( JXTimer.TIMER_PERIOD, this.timerActionListener );
 		this.timer.setRepeats( true );
 		this.timer.start();
@@ -129,7 +145,7 @@ public final class JXTimer
 	 * This method adds a {@link JXTimerComponent} to display the countdown.
 	 * @param tComp {@link JXTimerComponent} that will be added.
 	 * @throws IllegalArgumentException if timer component given is null.
-	 * @throws IllegalStateException if times is still running.
+	 * @throws IllegalStateException if times is running.
 	 */
 	public void addClock(JXTimerComponent tComp) throws IllegalArgumentException,
 			IllegalStateException{
@@ -177,22 +193,23 @@ public final class JXTimer
 	}
 
 	/**
-	 * This method set the action to execute when timer is up.<br>
-	 * Set this to null to cancel the event.
+	 * This method set the action to execute when timer is up. Set this to null
+	 * to cancel the event.
 	 * @param event {@link Runnable} to run when time is up.
 	 */
 	public void setActionWhenTimeIsUp(Runnable event){
-		if(event != null)
-            this.timerActionListener.timeUpEvent = event;
+        this.timerActionListener.timeUpEvent = event;
 	}
 
 //==============================================================================
 // GETTER
 //==============================================================================
+	/** @return {@link List} of JXTimerComponent added to display the timer. */
 	public List<JXTimerComponent> getClocks(){
 		return this.components;
 	}
 
+	/** @return {@link JXTimerState} the state of timer */
 	public JXTimerState getState(){
 		return this.state;
 	}
