@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -56,13 +57,21 @@ public final class JXTimer
 	private JXTimerState state = JXTimerState.STOPPED;
 	private List<JXTimerComponent> components = new ArrayList<>();
 
-	public JXTimer(){}
-
-	public JXTimer( long millisecondToStart, Runnable eventTimeUp ){
-		this.setStartingTime(millisecondToStart);
+    public JXTimer( long msToStart, Runnable eventTimeUp, JXTimerComponent... comp ){
+		this.setStartingTime(msToStart);
 		this.setActionWhenTimeIsUp(eventTimeUp);
+		this.setClocks(Arrays.asList(comp));
 	}
 
+	public JXTimer( long msToStart ){
+		this(msToStart, null, new JXTimerComponent[]{});
+	}
+
+	public JXTimer( long msToStart, Runnable eventTimeUp ){
+		this(msToStart,eventTimeUp, new JXTimerComponent[]{});
+	}
+
+	public JXTimer(){}
 
 //==============================================================================
 // METHOD
@@ -137,7 +146,7 @@ public final class JXTimer
 	/**
 	 * This method set the component/s to display the countdown
 	 * @param tComp {@link List} as list {@link javax.swing.JLabel}.
-	 * @throws IllegalArgumentException if argument given is null or list size = 0.
+	 * @throws IllegalArgumentException if at least one object in the list is null.
 	 * @throws IllegalStateException if times is still running.
 	 */
 	public void setClocks(List<JXTimerComponent> tComp) throws IllegalArgumentException,
@@ -145,11 +154,8 @@ public final class JXTimer
 		if(this.state != JXTimerState.STOPPED)
 			throw new IllegalStateException( "You can not add timer component to display " +
 					"the countdown while the timer is still running." );
-
 		if(tComp == null || tComp.size() == 0)
-			throw new IllegalArgumentException( "List of timer components can not " +
-					"be null or empty list." );
-
+			return;
 		for(JXTimerComponent l : tComp)
 			this.addClock(l);
 	}
@@ -165,11 +171,9 @@ public final class JXTimer
 		if(this.state != JXTimerState.STOPPED)
 			throw new IllegalStateException("You can not change the time to " +
 					"start while the countdown is still running." );
-
-		if(time < 0)
-			throw new IllegalArgumentException( "Time can not be less of zero." );
-
-		this.timerActionListener.setCurrentTime(time);
+		if(time <= 0)
+			return;
+        this.timerActionListener.setCurrentTime(time);
 	}
 
 	/**
@@ -178,7 +182,8 @@ public final class JXTimer
 	 * @param event {@link Runnable} to run when time is up.
 	 */
 	public void setActionWhenTimeIsUp(Runnable event){
-		this.timerActionListener.timeUpEvent = event;
+		if(event != null)
+            this.timerActionListener.timeUpEvent = event;
 	}
 
 //==============================================================================

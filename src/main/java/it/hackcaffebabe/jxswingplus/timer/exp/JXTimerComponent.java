@@ -3,20 +3,21 @@ package it.hackcaffebabe.jxswingplus.timer.exp;
 import javax.swing.*;
 import static it.hackcaffebabe.jxswingplus.timer.exp.JXTimerUtils.*;
 
+/**
+ * //TODO add doc
+ */
 public class JXTimerComponent extends JLabel {
-    private long milliseconds;
     private String formattedTime;
 
     public JXTimerComponent(){
         super();
         this.setTime(0L);
-        this.formattedTime = "--:--:--";
+        this.formattedTime = "00:00:00";
     }
 
     /* package method used in JXTimer */
     void setTime(long milliseconds){
-        this.milliseconds = milliseconds;
-        this.formattedTime = getFormattedTime(this.milliseconds);
+        this.formattedTime = getFormattedTime(milliseconds);
         super.setText( this.formattedTime );
     }
 
