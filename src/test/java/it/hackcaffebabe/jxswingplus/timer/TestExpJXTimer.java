@@ -13,7 +13,9 @@ import it.hackcaffebabe.jxswingplus.timer.exp.JXTimer;
 
 
 /**
- * Simple class to test //TODO add link to class
+ * Simple class to test {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimer},
+ * {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimerComponent} and
+ * {@link it.hackcaffebabe.jxswingplus.timer.exp.JXTimerUtils}.
  *
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
