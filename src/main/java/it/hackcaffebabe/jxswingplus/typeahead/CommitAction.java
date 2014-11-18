@@ -4,13 +4,16 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
-
 /**
- * This action will complete the keyword if is found.
- * Use with:
+ * This action will complete the keyword if is found. Use with:
  * <pre>{@code
- * textField.getInputMap().put(KeyStroke.getKeyStroke("TAB"), "commit");
- * textField.getActionMap().put("commit", new CommitAction(jxAutocompleteDocumentListener, keywordList) );
+ * JTextField textField = new JTextField();
+ * JXAutoComplete autoComplete = new JXAutoComplete(textField, k );
+ * String tab = "TAB";
+ * String enter = "ENTER";
+ * textField.getInputMap().put( KeyStroke.getKeyStroke( tab ), COMMIT_ACTION );
+ * textField.getInputMap().put( KeyStroke.getKeyStroke( enter ), COMMIT_ACTION );
+ * textField.getActionMap(COMMIT_ACTION, new CommitAction(autoComplete) );
  * }</pre>
  * 
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
@@ -19,23 +22,20 @@ import javax.swing.AbstractAction;
 public class CommitAction extends AbstractAction
 {
 	private static final long serialVersionUID = 1L;
-	private JXAutoComplete autocomplete;
+	private JXAutoComplete autoComplete;
 
 	public CommitAction(JXAutoComplete autocomplete){
-		this.autocomplete = autocomplete;
+		this.autoComplete = autocomplete;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e){
-		if(autocomplete.getMode() == Mode.COMPLETION) {
-			int pos = autocomplete.getJTextFiled().getSelectionEnd();
-			StringBuffer sb = new StringBuffer( autocomplete.getJTextFiled().getText() );
-			autocomplete.getJTextFiled().setText( sb.toString() );
-			autocomplete.getJTextFiled().setCaretPosition( pos );
-			autocomplete.setMode( Mode.INSERT );
+		if(autoComplete.getMode() == Mode.COMPLETION) {
+			int pos = autoComplete.getJTextFiled().getSelectionEnd();
+			//autoComplete.getJTextFiled().setText(autoComplete.getJTextFiled().getText());
+			autoComplete.getJTextFiled().setCaretPosition( pos );
+			autoComplete.setMode( Mode.INSERT );
 		} else {
-//			autocomplete.getJTextFiled().replaceSelection( "\t" );
-//			autocomplete.setMode( Mode.INSERT );
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
 		}
 	}
