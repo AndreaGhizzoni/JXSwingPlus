@@ -33,8 +33,6 @@ import java.util.Vector;
  * Also there are a list of method to get or remove objects from the model. *
  * Now is ready to be displayed into a
  * {@link it.hackcaffebabe.jxswingplus.table.JXTable} as a common data model.
- *
- * @param <T>
  */
 public class JXObjectModel<T extends JXDisplayable> extends AbstractTableModel
 {
@@ -62,7 +60,7 @@ public class JXObjectModel<T extends JXDisplayable> extends AbstractTableModel
 	 * @throws IllegalArgumentException if argument given is null or empty.
 	 */
     public JXObjectModel(String[] colNames) throws IllegalArgumentException{
-		this(colNames, null);
+		this(colNames, new Integer[]{} );
 	}
 
 	/** Instance a empty model */
@@ -136,7 +134,7 @@ public class JXObjectModel<T extends JXDisplayable> extends AbstractTableModel
 	/**
 	 * This method remove the specific object from the model if exists.
 	 * @param index {@link Integer} the model index of the object.
-	 * @throws IndexOutOfBoundsException if index < 0 or >= getObjects().size()
+	 * @throws IndexOutOfBoundsException if index &lt; 0 or &gt;= getObjects().size()
 	 */
 	public void removeObject(int index) throws IndexOutOfBoundsException{
 		if(index < 0 || index >= this.objects.size())
@@ -170,7 +168,7 @@ public class JXObjectModel<T extends JXDisplayable> extends AbstractTableModel
 	 * This method returns a specific object from his model index.
 	 * @param row {@link Integer} the model row of the table.
 	 * @return the object from the model.
-	 * @throws IndexOutOfBoundsException if row is < 0 or >= getObjects().size().
+	 * @throws IndexOutOfBoundsException if row is &lt; 0 or &gt;= getObjects().size().
 	 */
 	public T getObject(int row) throws IndexOutOfBoundsException{
 		if(row < 0 || row > this.objects.size())

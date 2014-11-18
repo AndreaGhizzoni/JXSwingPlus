@@ -16,8 +16,7 @@ import javax.swing.text.JTextComponent;
  * class as a classic {@link JTable} with the model
  * {@link it.hackcaffebabe.jxswingplus.table.model.JXTableModel} or, the
  * {@link it.hackcaffebabe.jxswingplus.table.model.JXObjectModel} of
- * {@link it.hackcaffebabe.jxswingplus.table.model.DisplayableObject}.
- *
+ * {@link it.hackcaffebabe.jxswingplus.table.model.JXDisplayable}.
  * There is also a method to enable a row sorter with {@link javax.swing.JTextField}
  * given to get the text to sort:
  * <pre>{@code

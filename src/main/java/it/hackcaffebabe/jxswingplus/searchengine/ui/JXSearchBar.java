@@ -9,23 +9,21 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.UIManager;
 
-
 /**
  * Simple search bar UI component. This support the model
- * {@link JXDefaultSearchBarModel} that contains object of type
+ * {@link it.hackcaffebabe.jxswingplus.searchengine.ui.JXDefaultSearchBarModel}
+ * that contains object of type
  * {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine}.
  * You can use
  * {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXDefaultSearchEngine}
- * or implements {@link JXSearchEngine} to create your own Engine class.
- * Here there is a simple use:
+ * or implements {@link it.hackcaffebabe.jxswingplus.searchengine.model.JXSearchEngine}
+ * to create your own Engine class. Here there is a simple use:
  * <pre>{@code
  * ActionListener l = new AbstractAction(){
- *    @Override
  *    public void actionPerformed(ActionEvent e){
- *      System.out.println("Somethings has been searched.")
+ *       System.out.println("Somethings has been searched.")
  *    }
  * }
- *
  * JXSearchBar searchBar = new JXSearchBar(l);
  * searchBar.setModel(model); //assuming model is a JXDefaultSearchBarModel
  * }</pre>

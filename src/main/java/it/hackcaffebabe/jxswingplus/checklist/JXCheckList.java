@@ -21,8 +21,7 @@ import javax.swing.SwingUtilities;
  * its elements by:
  * <pre>{@code
  * JXCheckList<Integer> lstCheck = new JXCheckList<>();
- * }
- * </pre>
+ * }</pre>
  * To add elements is the same as common {@link javax.swing.JList} instead of
  * the elements MUST be of type
  * {@link it.hackcaffebabe.jxswingplus.checklist.JXCheckListEntry}. You can
@@ -36,15 +35,15 @@ import javax.swing.SwingUtilities;
  * on element to check it:
  * <pre>{@code
  * ActionListener evt = new ActionListener(){
- * 		public void actionPerformed(ActionEvent e){
- * 			System.out.println( lstCheck.getCheckedIndexes() );
- * 		}
+ *    public void actionPerformed(ActionEvent e){
+ *       System.out.println( lstCheck.getCheckedIndexes() );
+ *    }
  * };
  * DefaultListModel<JXCheckListEntry<Integer>> model = new DefaultListModel<>();
  * for(int i = 0; i < 100; i++) {
- * 		JXCheckListEntry<Integer> x = new JXCheckListEntry<Integer>( i, false );
- * 		x.addActionListener( evt );
- * 		model.addElement( x );
+ *    JXCheckListEntry<Integer> x = new JXCheckListEntry<Integer>( i, false );
+ *    x.addActionListener( evt );
+ *    model.addElement( x );
  * }
  * lstCheck.setModel( model );
  * }</pre>
@@ -147,6 +146,7 @@ public class JXCheckList <T> extends JList<JXCheckListEntry<T>>
      *                                     of this element.<br>
 	 * This icon indicates if the elements is checked or not.
 	 * @return {@link DefaultListModel} of T type.
+	 * @param <T> the type of object wrapped in JXCheckList.
 	 */
 	public static <T> DefaultListModel<JXCheckListEntry<T>> convertToModel(
 			List<T> objects, boolean showRightIcon){
