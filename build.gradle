@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.10'
+    testCompile fileTree(dir: 'src/test/resources', include:['*.jar'])
 //    compile fileTree(dir: 'lib', include: ['*.jar'])
 }
 
