@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
-public class TestJXAutocomplete
+public class TestJXAutoComplete
 {
 	private static final String COMMIT_ACTION = "commit";
 
@@ -43,7 +43,7 @@ public class TestJXAutocomplete
 		// which finishes the auto complete when given a suggestion
 		textField.getInputMap().put( KeyStroke.getKeyStroke( "TAB" ), COMMIT_ACTION );
 		textField.getInputMap().put( KeyStroke.getKeyStroke( "ENTER" ), COMMIT_ACTION );
-		textField.getActionMap().put( COMMIT_ACTION, new CommitAction( autoComplete ) );
+		textField.getActionMap().put( COMMIT_ACTION, new JXCommitAction( autoComplete ) );
 
 		container.add( textField );
 		f.add( container );

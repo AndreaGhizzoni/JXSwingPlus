@@ -18,7 +18,7 @@ import javax.swing.text.BadLocationException;
  * }</pre>
  * Where "k" is a {@link java.util.List} of {@link java.lang.String} to help the
  * user while is typing on {@link javax.swing.JTextField}. You can use
- * {@link it.hackcaffebabe.jxswingplus.typeahead.CommitAction} to complete
+ * {@link JXCommitAction} to complete
  * the word that this class suggest you:
  * <pre>{@code
  * String tab = "TAB";
