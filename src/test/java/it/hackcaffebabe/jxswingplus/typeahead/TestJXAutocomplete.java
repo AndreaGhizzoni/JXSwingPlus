@@ -1,7 +1,5 @@
 package it.hackcaffebabe.jxswingplus.typeahead;
 
-import it.hackcaffebabe.jxswingplus.typeahead.CommitAction;
-import it.hackcaffebabe.jxswingplus.typeahead.JXAutocomplete;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 
 /**
- * Simple class to Test {@link JXAutocomplete}.
+ * Simple class to Test {@link JXAutoComplete}.
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.0
  */
@@ -41,7 +39,7 @@ public class TestJXAutocomplete
 		keywords.add( "stackabuse" );
 		keywords.add( "java" );
 		keywords.add( "jarjar" );
-		JXAutocomplete autoComplete = new JXAutocomplete( textField, keywords );
+		JXAutoComplete autoComplete = new JXAutoComplete( textField, keywords );
 
 		// Maps the tab key to the commit action, 
 		// which finishes the auto complete when given a suggestion

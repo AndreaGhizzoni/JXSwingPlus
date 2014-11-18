@@ -9,25 +9,27 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
-
 /**
- * This is a {@link DocumentListener} that provide the typeahead on a {@link JTextField}.
- * How to use:
+ * This is a {@link DocumentListener} that provide the type-ahead on a
+ * {@link JTextField}. How to use:
  * <pre>{@code
  * JTextField textField = new JTextField();
- * JXAutocomplete autoComplete = new JXAutocomplete(textField, keywords);
+ * JXAutoComplete autoComplete = new JXAutoComplete(textField, k );
  * }</pre>
- * Where "keywords" is a {@link List} of {@link String} to help the user while is typing on {@link JTextField}.
- * You can use {@link CommitAction} to complete the word that this class suggest you:
+ * Where "k" is a {@link List} of {@link String} to help the user while is
+ * typing on {@link JTextField}. You can use {@link CommitAction} to complete
+ * the word that this class suggest you:
  * <pre>{@code
- * textField.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);
- * textField.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), COMMIT_ACTION );
+ * String tab = "TAB";
+ * String enter = "ENTER";
+ * textField.getInputMap().put( KeyStroke.getKeyStroke( tab ), COMMIT_ACTION );
+ * textField.getInputMap().put( KeyStroke.getKeyStroke( enter ), COMMIT_ACTION );
  * }</pre>
  *  
  * @author Andrea Ghizzoni. More info at andrea.ghz@gmail.com
  * @version 1.5
  */
-public class JXAutocomplete implements DocumentListener
+public class JXAutoComplete implements DocumentListener
 {
 	private JTextField textField;
 	private List<String> keywords;
@@ -35,28 +37,31 @@ public class JXAutocomplete implements DocumentListener
 	private static int MIN_CHAR_TO_START = 1;
 
 	/**
-	 * Create a new Document listener that helps user to search a word while typing.
+	 * Create a new Document listener that helps user to search a word while
+	 * typing.
 	 * @param textField {@link JTextField} the field to insert.
 	 * @param keywords {@link List} of keywords to view while typing.
 	 * @throws IllegalArgumentException textFiled is null.
 	 */
-	public JXAutocomplete(JTextField textField, List<String> keywords) throws IllegalArgumentException{
+	public JXAutoComplete(JTextField textField, List<String> keywords)
+			throws IllegalArgumentException{
 		this.setJTextField( textField );
-		textField.getDocument().addDocumentListener( this );
-		textField.setFocusTraversalKeysEnabled( false );// Without this, cursor always leaves text field
+		textField.getDocument().addDocumentListener(this);
+		// Without this, cursor always leaves text field
+		textField.setFocusTraversalKeysEnabled(false);
 		this.setKeywords( keywords );
 	}
 
-//===========================================================================================
+//==============================================================================
 // SETTER
-//===========================================================================================
+//==============================================================================
 	/**
 	 * Set the Keywords to search while typing
 	 * @param listOfKeywords {@link List} of keywords.
 	 */
 	public void setKeywords(List<String> listOfKeywords){
 		if(listOfKeywords == null)
-			this.keywords = new ArrayList<String>();
+			this.keywords = new ArrayList<>();
 		else this.keywords = listOfKeywords;
 
 		if(!this.keywords.isEmpty())
@@ -74,8 +79,9 @@ public class JXAutocomplete implements DocumentListener
 	}
 
 	/**
-	 * This method set the minimum characters to start the search into keywords list.
-	 * @param i {@link Integer} minimum characters.
+	 * This method set the minimum characters to start the search into keywords
+	 * list.
+	 * @param i int minimum characters.
 	 */
 	public void setMinimumCharToStartSearch(int i){
 		if(i > 0)
@@ -89,9 +95,9 @@ public class JXAutocomplete implements DocumentListener
 		this.textField = f;
 	}
 
-//===========================================================================================
+//==============================================================================
 // GETTER
-//===========================================================================================
+//==============================================================================
 	/** @return {@link JTextField} where the user will insert the text. */
 	public JTextField getJTextFiled(){
 		return this.textField;
@@ -107,9 +113,9 @@ public class JXAutocomplete implements DocumentListener
 		return this.mode;
 	}
 
-//===========================================================================================
+//==============================================================================
 // OVERRIDE
-//===========================================================================================
+//==============================================================================
 	@Override
 	public void changedUpdate(DocumentEvent ev){}
 
@@ -121,45 +127,45 @@ public class JXAutocomplete implements DocumentListener
 		if(ev.getLength() != 1 || this.keywords.isEmpty())
 			return;
 
-		int offest = ev.getOffset();
-		String content = null;
+		int offset = ev.getOffset();
+		String content = "";
 		try {
-			content = textField.getText( 0, offest + 1 );
-		} catch(BadLocationException e) {
-			e.printStackTrace();
-		}
+			content = textField.getText( 0, offset + 1 );
+		} catch(BadLocationException ignored) { }
 
 		// Find where the word starts
 		int wordStartIndex;
-		for(wordStartIndex = offest; wordStartIndex >= 0; wordStartIndex--) {
+		for(wordStartIndex = offset; wordStartIndex >= 0; wordStartIndex--) {
 			if(!Character.isLetter( content.charAt( wordStartIndex ) )) {
 				break;
 			}
 		}
 
-		if(offest - wordStartIndex < MIN_CHAR_TO_START)// number of char to start the search.
+		// number of char to start the search.
+		if(offset - wordStartIndex < MIN_CHAR_TO_START)
 			return;
 
 		String prefix = content.substring( wordStartIndex + 1 );
-		int indexOfFirstKeyFound = Collections.binarySearch( this.keywords, prefix );
+		int indexOfFirstKeyFound = Collections.binarySearch( keywords, prefix );
 		if(indexOfFirstKeyFound < 0 && -indexOfFirstKeyFound <= keywords.size()) {
 			String match = keywords.get( -indexOfFirstKeyFound - 1 );
 			if(match.startsWith( prefix )) { // A completion is found
-				String completion = match.substring( offest - wordStartIndex );
-				SwingUtilities.invokeLater( new CompletionTask( completion, offest + 1 ) );
+				String completion = match.substring( offset - wordStartIndex );
+				SwingUtilities.invokeLater( new CompletionTask( completion, offset + 1 ) );
 			}
 		} else {
 			setMode( Mode.INSERT );// Nothing found
 		}
 	}
 
-//===========================================================================================
+//==============================================================================
 // INNER CLASS
-//===========================================================================================
+//==============================================================================
 	/* 
 	 * We cannot modify Document from within insertUpdate() function, 
 	 * so we submit a task that does the change later.
-	 * To avoid: java.lang.IllegalStateException: Attempt to mutate in notification 
+	 * To avoid: java.lang.IllegalStateException: Attempt to mutate in
+	 * notification
 	 */
 	private class CompletionTask implements Runnable
 	{
@@ -172,7 +178,7 @@ public class JXAutocomplete implements DocumentListener
 		}
 
 		public void run(){
-			StringBuffer sb = new StringBuffer( textField.getText() );
+			StringBuilder sb = new StringBuilder( textField.getText() );
 			sb.insert( position, completion );
 			textField.setText( sb.toString() );
 			textField.setCaretPosition( position + completion.length() );

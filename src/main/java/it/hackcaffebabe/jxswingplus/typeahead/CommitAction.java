@@ -19,9 +19,9 @@ import javax.swing.AbstractAction;
 public class CommitAction extends AbstractAction
 {
 	private static final long serialVersionUID = 1L;
-	private JXAutocomplete autocomplete;
+	private JXAutoComplete autocomplete;
 
-	public CommitAction(JXAutocomplete autocomplete){
+	public CommitAction(JXAutoComplete autocomplete){
 		this.autocomplete = autocomplete;
 	}
 
